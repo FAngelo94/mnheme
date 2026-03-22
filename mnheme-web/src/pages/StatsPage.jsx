@@ -1,5 +1,6 @@
 import Stats from '../components/Stats';
 import Timeline from '../components/Timeline';
+import Graph from '../components/Graph';
 import SectionGuide from '../components/SectionGuide';
 import { useState } from 'react';
 
@@ -9,8 +10,8 @@ export default function StatsPage() {
   return (
     <div>
       <div className="view-header">
-        <h1>Stats & Timeline</h1>
-        <p className="view-desc">Statistiche del database e timeline emotiva.</p>
+        <h1>Stats, Timeline & Graph</h1>
+        <p className="view-desc">Statistiche del database, timeline emotiva e grafo delle connessioni.</p>
       </div>
 
       <SectionGuide title="Cosa trovo qui?">
@@ -24,9 +25,15 @@ export default function StatsPage() {
           a riguardo si sono evolute nel tempo, in ordine cronologico. Ogni punto della timeline
           mostra il sentimento, la data e le note associate.
         </p>
+        <p>
+          <strong>Graph</strong> &mdash; Una visualizzazione interattiva a rete dei tuoi ricordi.
+          I nodi rappresentano ricordi individuali, collegati da concetti, sentimenti o tag condivisi.
+          Puoi trascinare, zoomare e cliccare per esplorare le connessioni.
+        </p>
         <div className="guide-note">
           La timeline è particolarmente utile prima di usare Reflect: ti dà un colpo d'occhio
           visivo sull'evoluzione emotiva, mentre Reflect ne fa un'analisi profonda con l'IA.
+          Il grafo mostra le relazioni strutturali tra i ricordi.
         </div>
       </SectionGuide>
 
@@ -37,10 +44,14 @@ export default function StatsPage() {
         <button className={`tab-btn ${tab === 'timeline' ? 'active' : ''}`} onClick={() => setTab('timeline')}>
           Timeline
         </button>
+        <button className={`tab-btn ${tab === 'graph' ? 'active' : ''}`} onClick={() => setTab('graph')}>
+          Graph
+        </button>
       </div>
 
       {tab === 'stats'    && <Stats />}
       {tab === 'timeline' && <Timeline />}
+      {tab === 'graph'    && <Graph />}
     </div>
   );
 }

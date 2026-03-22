@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Ask from '../components/Ask';
 import Reflect from '../components/Reflect';
 import Remember from '../components/Remember';
+import Summarize from '../components/Summarize';
 import SectionGuide from '../components/SectionGuide';
 import { useBrain } from '../hooks/useBrain';
 
@@ -162,6 +163,9 @@ export default function BrainPage() {
         <button className={`tab-btn ${tab === 'introspect' ? 'active' : ''}`} onClick={() => setTab('introspect')}>
           Introspect
         </button>
+        <button className={`tab-btn ${tab === 'summarize' ? 'active' : ''}`} onClick={() => setTab('summarize')}>
+          Summarize
+        </button>
       </div>
 
       {tab === 'ask'        && <Ask />}
@@ -169,6 +173,7 @@ export default function BrainPage() {
       {tab === 'remember'   && <Remember />}
       {tab === 'dream'      && <DreamPanel />}
       {tab === 'introspect' && <IntrospectPanel />}
+      {tab === 'summarize'  && <Summarize />}
     </div>
   );
 }
