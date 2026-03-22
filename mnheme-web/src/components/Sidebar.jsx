@@ -28,11 +28,7 @@ export default function Sidebar({ isOpen, onClose }) {
   return (
     <aside className={`sidebar${isOpen ? ' open' : ''}`}>
       <div className="sidebar-header">
-        <div className="logo-mark">
-          <span className="logo-dot red" />
-          <span className="logo-dot amber" />
-          <span className="logo-dot green" />
-        </div>
+        <img src="/logo.png" alt="MNHEME" className="sidebar-logo" />
         <div className="logo-text">MNHEME</div>
         <div className="logo-sub">Memory Journal</div>
       </div>

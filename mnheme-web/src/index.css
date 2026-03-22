@@ -127,6 +127,12 @@ input, textarea, select, button {
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
+.mobile-header-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
 /* ===================================================================
    SIDEBAR OVERLAY — backdrop for mobile
@@ -159,21 +165,18 @@ input, textarea, select, button {
 }
 
 .sidebar-header {
-  padding: 24px 20px 18px;
+  padding: 20px 20px 16px;
   border-bottom: 1px solid var(--sidebar-border);
+  text-align: center;
 }
-.logo-mark {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-.logo-dot {
-  width: 10px; height: 10px;
+.sidebar-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 8px;
   border-radius: 50%;
+  object-fit: cover;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
 }
-.logo-dot.red   { background: var(--red); }
-.logo-dot.amber { background: var(--amber); }
-.logo-dot.green { background: var(--accent); }
 
 .logo-text {
   font-family: var(--font-heading);

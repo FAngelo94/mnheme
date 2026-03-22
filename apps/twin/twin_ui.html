@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemello Digitale</title>
+  <link rel="stylesheet" href="twin_ui.css">
+</head>
+<body>
+
+<!-- ── Setup overlay ── -->
+<div class="setup-overlay" id="setup-overlay" style="display:none">
+  <div class="setup-card">
+    <h1>Connetti al Twin</h1>
+    <p class="setup-sub">
+      Inserisci l'URL del server API del gemello digitale.<br>
+      Il profilo viene caricato automaticamente.
+    </p>
+    <div class="form-field">
+      <label class="form-label">URL Server</label>
+      <input class="form-input" id="setup-url" type="text" placeholder="http://localhost:8001">
+    </div>
+    <button class="btn-accent" id="btn-connect" onclick="connectToServer()">Connetti</button>
+    <div class="setup-error" id="setup-error"></div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="twin-identity">
+      <div class="twin-avatar"  id="twin-avatar">✦</div>
+      <div class="twin-name"    id="twin-name">—</div>
+      <div class="twin-dates"   id="twin-dates">—</div>
+      <div class="twin-epitaph" id="twin-epitaph"></div>
+      <div class="twin-chardir" id="twin-chardir"></div>
+    </div>
+
+    <!-- Selettore personaggio — visibile solo se ci sono più personaggi -->
+    <div class="character-selector" id="character-selector" style="display:none">
+      <div class="tier-label">Personaggio</div>
+      <div class="character-list" id="character-list"></div>
+    </div>
+
+    <div class="tier-selector">
+      <div class="tier-label">Livello di accesso</div>
+      <button class="tier-btn" data-tier="public">
+        <span class="tier-icon">◯</span> Pubblico
+        <span class="tier-desc">Ricordi condivisi con tutti</span>
+      </button>
+      <button class="tier-btn active" data-tier="family">
+        <span class="tier-icon">◎</span> Familiare
+        <span class="tier-desc">Ricordi di famiglia e vita</span>
+      </button>
+      <button class="tier-btn" data-tier="intimate">
+        <span class="tier-icon">◉</span> Intimo
+        <span class="tier-desc">Ricordi più profondi</span>
+      </button>
+    </div>
+
+    <nav class="nav-links">
+      <button class="nav-btn active" data-view="ask">
+        <span class="nav-icon">✦</span> Consulta
+      </button>
+      <button class="nav-btn" data-view="letter">
+        <span class="nav-icon">✉</span> Lettera
+      </button>
+      <button class="nav-btn" data-view="legacy">
+        <span class="nav-icon">◈</span> Eredità
+      </button>
+      <button class="nav-btn" data-view="timeline">
+        <span class="nav-icon">⟿</span> Arco nel tempo
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="server-row">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-label">non connesso</span>
+      </div>
+      <input class="server-input" id="server-url" placeholder="http://localhost:8001">
+    </div>
+
+    <!-- Character selector -->
+    <div class="character-selector" id="character-selector" style="display:none">
+      <div class="tier-label">Personaggi</div>
+      <div class="character-list" id="character-list"></div>
+    </div>
+
+    <div class="theme-selector">
+      <div class="theme-selector-label">Tema</div>
+      <div class="theme-grid" id="theme-grid"></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- Consulta -->
+    <section class="view active" id="view-ask">
+      <div class="conversation" id="conversation">
+        <div class="empty-state" id="ask-empty">
+          <span class="empty-icon">✦</span>
+          <span>Poni una domanda al gemello digitale.<br>
+                Risponderà solo con ciò che ha davvero vissuto.</span>
+        </div>
+      </div>
+      <div class="ask-bar">
+        <div class="ask-row">
+          <textarea class="ask-textarea" id="ask-input"
+            placeholder="Cosa vorresti chiederle/gli?"
+            rows="1"
+            onkeydown="handleAskKey(event)"></textarea>
+          <button class="ask-send" id="btn-ask" onclick="sendQuestion()">Chiedi →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lettera -->
+    <section class="view" id="view-letter">
+      <div class="letter-form">
+        <h2>Genera una lettera</h2>
+        <p>Il twin scriverà una lettera ancorata ai ricordi reali su quel tema.</p>
+        <div class="form-field">
+          <label class="form-label">A chi è diretta</label>
+          <input class="form-input" id="letter-to"
+                 placeholder="es. mia figlia, i miei nipoti, chiunque mi abbia voluto bene">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Tema centrale</label>
+          <input class="form-input" id="letter-theme"
+                 placeholder="es. il coraggio, cosa rimpiango, il lavoro, cosa conta davvero">
+        </div>
+        <button class="btn-accent" id="btn-letter" onclick="generateLetter()">
+          Genera lettera
+        </button>
+      </div>
+      <div class="letter-output" id="letter-output" style="display:none">
+        <div class="letter-text" id="letter-text"></div>
+        <div class="letter-meta" id="letter-meta"></div>
+      </div>
+    </section>
+
+    <!-- Eredità -->
+    <section class="view" id="view-legacy">
+      <div class="legacy-wrap" id="legacy-wrap">
+        <div class="empty-state" id="legacy-empty">
+          <span class="empty-icon">◈</span>
+          <span>Carica l'eredità emotiva per vedere il ritratto completo.</span>
+        </div>
+        <div id="legacy-content" style="display:none">
+          <div class="legacy-section">
+            <div class="legacy-section-title">Ritratto</div>
+            <div class="legacy-text" id="leg-portrait"></div>
+          </div>
+          <div class="legacy-section">
+            <div class="legacy-section-title">Valori vissuti</div>
+            <div class="legacy-text" id="leg-values"></div>
+          </div>
+          <div class="legacy-section">
+            <div class="legacy-section-title">Irrisolto</div>
+            <div class="legacy-text" id="leg-unresolved"></div>
+          </div>
+          <div class="legacy-section">
+            <div class="legacy-section-title">Messaggio</div>
+            <div class="legacy-text" id="leg-message" style="font-style:italic"></div>
+          </div>
+          <div class="legacy-section">
+            <div class="legacy-section-title">Arco della vita</div>
+            <div class="legacy-arc" id="leg-arc"></div>
+          </div>
+          <div class="legacy-section">
+            <div class="legacy-section-title">Concetti dominanti</div>
+            <div class="legacy-concepts" id="leg-concepts"></div>
+          </div>
+        </div>
+      </div>
+      <div class="legacy-btn-row">
+        <button class="btn-accent" id="btn-legacy" onclick="loadLegacy()">Carica eredità</button>
+      </div>
+    </section>
+
+    <!-- Arco nel tempo -->
+    <section class="view" id="view-timeline">
+      <div class="timeline-form">
+        <div style="flex:1">
+          <label class="form-label">Concept da esplorare</label>
+          <input class="form-input" id="timeline-concept"
+                 placeholder="es. padre, lavoro, amore, solitudine"
+                 onkeydown="if(event.key==='Enter') loadTimeline()">
+        </div>
+        <button class="btn-accent" id="btn-timeline" onclick="loadTimeline()">Carica arco</button>
+      </div>
+      <div class="timeline-wrap" id="timeline-wrap">
+        <div class="empty-state" id="timeline-empty">
+          <span class="empty-icon">⟿</span>
+          <span>Inserisci un concept per vedere come il rapporto emotivo<br>è cambiato nel tempo.</span>
+        </div>
+        <div id="timeline-content" style="display:none">
+          <div class="timeline-arc"   id="tl-arc"></div>
+          <div class="timeline-track" id="tl-track"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="twin_ui.js"></script>
+</body>
+</html>
