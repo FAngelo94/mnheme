@@ -46,5 +46,15 @@ export function useBrain() {
     [run]
   );
 
-  return { perceive, ask, reflect, dream, loading, error, result };
+  const introspect = useCallback(
+    () => run(() => brainRef.current.introspect()),
+    [run]
+  );
+
+  const summarize = useCallback(
+    (memories, opts) => run(() => brainRef.current.summarize(memories, opts)),
+    [run]
+  );
+
+  return { perceive, ask, reflect, dream, introspect, summarize, loading, error, result };
 }

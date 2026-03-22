@@ -318,6 +318,7 @@ def _build_anthropic(
     }
     headers = {
         "Content-Type":      "application/json",
+        "User-Agent":        "Mozilla/5.0 (compatible; MNHEME/1.0)",
         "x-api-key":         p.api_key,
         "anthropic-version": "2023-06-01",
     }
@@ -338,6 +339,7 @@ def _build_openai(
     }
     headers = {
         "Content-Type": "application/json",
+        "User-Agent":   "Mozilla/5.0 (compatible; MNHEME/1.0)",
     }
     # Bearer token solo se presente (istanze locali non ne hanno bisogno)
     if p.api_key:
@@ -466,16 +468,12 @@ class LLMProvider:
 
         use_multi = env.get("USE_MULTI_PROVIDER", "false").lower() == "true"
 
-        # Se non specificato via parametro, leggi ACTIVE_PROVIDER dal .env
-        if active is None:
-            env_active = env.get("ACTIVE_PROVIDER", "").strip()
-            if env_active:
-                # Normalizza: underscore → trattino (come i nomi dei profili)
-                active = env_active.lower().replace("_", "-")
+        # Legge ACTIVE_PROVIDER dal .env se non passato esplicitamente come parametro
+        resolved_active = active or env.get("ACTIVE_PROVIDER") or None
 
         return cls(
             profiles      = profiles,
-            active        = active,
+            active        = resolved_active,
             use_multi     = use_multi,
             priority      = priority,
             retry_count   = retry_count,

@@ -5,25 +5,35 @@
  */
 
 export const FEELINGS = [
-  'gioia', 'tristezza', 'rabbia', 'paura', 'nostalgia',
-  'amore', 'malinconia', 'serenità', 'sorpresa', 'ansia',
-  'gratitudine', 'vergogna', 'orgoglio', 'noia', 'curiosità',
+  'ansia', 'paura', 'sollievo', 'tristezza', 'gioia',
+  'rabbia', 'vergogna', 'senso_di_colpa', 'nostalgia', 'speranza',
+  'orgoglio', 'delusione', 'solitudine', 'confusione', 'gratitudine',
+  'invidia', 'imbarazzo', 'eccitazione', 'rassegnazione', 'stupore',
+  'amore', 'malinconia', 'serenità', 'sorpresa', 'noia', 'curiosità',
 ];
 
 export const FEELING_LABELS = {
-  gioia: 'Joy', tristezza: 'Sadness', rabbia: 'Anger',
-  paura: 'Fear', nostalgia: 'Nostalgia', amore: 'Love',
+  ansia: 'Anxiety', paura: 'Fear', sollievo: 'Relief',
+  tristezza: 'Sadness', gioia: 'Joy', rabbia: 'Anger',
+  vergogna: 'Shame', senso_di_colpa: 'Guilt', nostalgia: 'Nostalgia',
+  speranza: 'Hope', orgoglio: 'Pride', delusione: 'Disappointment',
+  solitudine: 'Loneliness', confusione: 'Confusion', gratitudine: 'Gratitude',
+  invidia: 'Envy', imbarazzo: 'Embarrassment', eccitazione: 'Excitement',
+  rassegnazione: 'Resignation', stupore: 'Amazement', amore: 'Love',
   malinconia: 'Melancholy', serenità: 'Serenity', sorpresa: 'Surprise',
-  ansia: 'Anxiety', gratitudine: 'Gratitude', vergogna: 'Shame',
-  orgoglio: 'Pride', noia: 'Boredom', curiosità: 'Curiosity',
+  noia: 'Boredom', curiosità: 'Curiosity',
 };
 
 export const FEELING_COLORS = {
-  gioia: '#f4c430', tristezza: '#6b9ec7', rabbia: '#e05c3a',
-  paura: '#8b7db5', nostalgia: '#c47e3a', amore: '#d95f7a',
+  ansia: '#9b7fa8', paura: '#8b7db5', sollievo: '#87ceab',
+  tristezza: '#6b9ec7', gioia: '#f4c430', rabbia: '#e05c3a',
+  vergogna: '#9b5a5a', senso_di_colpa: '#8a6060', nostalgia: '#c47e3a',
+  speranza: '#7ec88a', orgoglio: '#c4933a', delusione: '#7a7a9b',
+  solitudine: '#5b6b8b', confusione: '#9a8a6a', gratitudine: '#7a9e5a',
+  invidia: '#6a9a5a', imbarazzo: '#c47a7a', eccitazione: '#e0a030',
+  rassegnazione: '#7a7a7a', stupore: '#c4b050', amore: '#d95f7a',
   malinconia: '#4a8fa8', serenità: '#5a9e6f', sorpresa: '#d4a017',
-  ansia: '#9b7fa8', gratitudine: '#7a9e5a', vergogna: '#9b5a5a',
-  orgoglio: '#c4933a', noia: '#5a5a6a', curiosità: '#6a8a9b',
+  noia: '#5a5a6a', curiosità: '#6a8a9b',
 };
 
 export const MEDIA_TYPES = ['text', 'image', 'video', 'audio', 'doc'];

@@ -14,9 +14,22 @@ function memoriesToContext(memories) {
   return memories.map((m, i) => {
     const ts = m.timestamp.slice(0, 10);
     const tags = m.tags.length ? m.tags.join(', ') : '—';
+
+    // For non-text media, don't include raw base64 in LLM context
+    const mediaType = m.media_type || 'text';
+    let contentDisplay;
+    if (mediaType !== 'text') {
+      contentDisplay = `[${mediaType.toUpperCase()} — ${m.content.length} bytes b64]`;
+    } else {
+      // Truncate text to 500 chars to save tokens
+      contentDisplay = m.content.length > 500
+        ? m.content.slice(0, 500) + '…'
+        : m.content;
+    }
+
     return (
       `[${i + 1}] ${ts} | Concetto: ${m.concept} | Sentimento: ${m.feeling}\n` +
-      `    Contenuto: ${m.content}\n` +
+      `    Contenuto: ${contentDisplay}\n` +
       `    Note: ${m.note || '—'}  |  Tag: ${tags}`
     );
   }).join('\n\n');
@@ -74,8 +87,15 @@ export class Brain {
     return provider;
   }
 
-  /** Perceive raw text input and create a structured memory. */
-  async perceive(rawInput, { concept = null, feeling = null, tags = null, note = '' } = {}) {
+  /**
+   * Perceive raw input and create a structured memory.
+   * Supports media/vision: pass mediaType, mediaData (base64 or data URL),
+   * and mediaMime for image/doc/audio/video inputs.
+   */
+  async perceive(rawInput, {
+    concept = null, feeling = null, tags = null, note = '',
+    mediaType = 'text', mediaData = null, mediaMime = null,
+  } = {}) {
     const llm = this._getProvider();
     const validFeelings = FEELINGS.join(', ');
 
@@ -90,8 +110,42 @@ export class Brain {
       `Input: ${rawInput}\n\n` +
       `Rispondi SOLO con il JSON, nessun altro testo.`;
 
-    const rawJson = await llm.complete(SYSTEM_PROMPT, prompt);
-    const parsed  = parseJson(rawJson);
+    // Determine whether to use vision or plain text
+    const isMedia = mediaType !== 'text' && !!mediaData;
+    let rawJson;
+
+    if (isMedia) {
+      // Extract pure base64 if it arrives as a data URL
+      let b64 = mediaData;
+      let mime = mediaMime || 'application/octet-stream';
+      if (typeof b64 === 'string' && b64.startsWith('data:')) {
+        try {
+          const [header, data] = b64.split(',', 2);
+          b64 = data;
+          if (!mime || mime === 'application/octet-stream') {
+            mime = header.split(':')[1].split(';')[0];
+          }
+        } catch { /* keep original */ }
+      }
+
+      const mediaItems = [{
+        type:       mediaType,
+        data:       b64,
+        media_type: mime,
+        size_kb:    Math.round(b64.length * 3 / 4 / 1024),
+      }];
+
+      const visionPrompt =
+        `Hai ricevuto un file ${mediaType.toUpperCase()} allegato.\n` +
+        `Descrivi brevemente cosa vedi/senti, poi rispondi con il JSON richiesto.\n\n` +
+        prompt;
+
+      rawJson = await llm.completeVision(SYSTEM_PROMPT, visionPrompt, mediaItems);
+    } else {
+      rawJson = await llm.complete(SYSTEM_PROMPT, prompt);
+    }
+
+    const parsed = parseJson(rawJson);
 
     let extConcept = concept || parsed.concept || 'Generale';
     let extFeeling = feeling || parsed.feeling || 'nostalgia';
@@ -102,11 +156,23 @@ export class Brain {
       extFeeling = closestFeeling(extFeeling);
     }
 
+    // DB content: for media, store the data URL; for text, store enriched text
+    let dbContent;
+    if (isMedia && mediaData) {
+      const mime = mediaMime || 'application/octet-stream';
+      dbContent = mediaData.startsWith('data:')
+        ? mediaData
+        : `data:${mime};base64,${mediaData}`;
+    } else {
+      dbContent = enriched;
+    }
+
     const memory = await this._db.remember(
       extConcept,
       extFeeling,
-      enriched,
+      dbContent,
       {
+        mediaType,
         note: note || `Input originale: ${rawInput.slice(0, 200)}`,
         tags: extTags,
       }
@@ -214,6 +280,71 @@ export class Brain {
       memories,
       arc,
     };
+  }
+
+  /** Full psychological portrait based on all memories. */
+  async introspect() {
+    const llm = this._getProvider();
+    const total = this._db.count();
+    if (total === 0) throw new Error('Database vuoto.');
+
+    const concepts  = this._db.listConcepts();
+    const feelings  = this._db.feelingDistribution();
+    const topC      = [...concepts].sort((a, b) => b.total - a.total).slice(0, 8);
+    const topMems   = this._db.recallAll({ limit: 20 });
+
+    let stats = `Totale ricordi: ${total}\n\nConcetti principali:\n`;
+    for (const c of topC) {
+      const fs = Object.entries(c.feelings).map(([f, n]) => `${f}(${n})`).join(', ');
+      stats += `  ${c.concept}: ${c.total} ricordi [${fs}]\n`;
+    }
+    stats += '\nDistribuzione emotiva:\n';
+    const sortedFeelings = Object.entries(feelings).sort(([, a], [, b]) => b - a);
+    for (const [f, n] of sortedFeelings) {
+      stats += `  ${f}: ${n} (${(n / total * 100).toFixed(1)}%)\n`;
+    }
+
+    const context = memoriesToContext(topMems);
+    const prompt =
+      `Analizza questo database di ricordi e produci un ritratto psicologico.\n\n` +
+      `STATISTICHE:\n${stats}\n` +
+      `CAMPIONE RICORDI (più recenti):\n${context}\n\n` +
+      `Produci:\n` +
+      `1. Ritratto della persona — chi è, come elabora il mondo emotivo\n` +
+      `2. Pattern cognitivi ricorrenti\n` +
+      `3. Tensioni irrisolte più evidenti\n` +
+      `4. Risorse emotive e punti di forza\n` +
+      `5. Una frase che cattura l'essenza di questa mente\n\n` +
+      `Sii specifico, non generalizzare.`;
+
+    const portrait = await llm.complete(SYSTEM_PROMPT, prompt);
+
+    return {
+      portrait,
+      dominantConcepts: topC.map(c => c.concept),
+      emotionalMap: feelings,
+      totalMemories: total,
+    };
+  }
+
+  /** Summarize a set of memories. Style: "narrativo" | "analitico" | "poetico". */
+  async summarize(memories, { style = 'narrativo' } = {}) {
+    if (!memories.length) return 'Nessun ricordo da riassumere.';
+
+    const llm = this._getProvider();
+    const styles = {
+      narrativo:  'Prima persona, fluido, continuo.',
+      analitico:  'Analizza pattern, cause, temi. Tono oggettivo.',
+      poetico:    'Prosa poetica. Immagini, ritmo, emozione.',
+    };
+    const instr = styles[style] || styles.narrativo;
+    const context = memoriesToContext(memories);
+
+    return llm.complete(
+      SYSTEM_PROMPT,
+      `Riassumi questi ricordi personali.\n\n${context}\n\n` +
+      `${instr}\nMantieni la complessità emotiva. Non semplificare.`
+    );
   }
 
   /** Free association: find unexpected connections between distant memories. */

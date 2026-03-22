@@ -66,6 +66,74 @@ function DreamPanel() {
   );
 }
 
+function IntrospectPanel() {
+  const { introspect, loading, error } = useBrain();
+  const [result, setResult] = useState(null);
+
+  const handleIntrospect = async () => {
+    try {
+      const r = await introspect();
+      setResult(r);
+    } catch {
+      // error from hook
+    }
+  };
+
+  return (
+    <div>
+      <SectionGuide title="Come funziona Introspect?">
+        <p>
+          <strong>Introspect</strong> analizza tutti i tuoi ricordi e produce un ritratto
+          psicologico completo: chi sei, come elabori le emozioni, quali pattern ricorrono.
+        </p>
+        <ol className="guide-steps">
+          <li>Il sistema raccoglie statistiche su concetti e distribuzione emotiva</li>
+          <li>Campiona i ricordi più recenti come contesto</li>
+          <li>L'IA produce un ritratto della persona, identifica pattern, tensioni irrisolte e risorse</li>
+        </ol>
+        <div className="guide-note">
+          Servono ricordi nel diario per poter fare introspezione.
+          Il ritratto diventa più accurato con più ricordi.
+        </div>
+      </SectionGuide>
+
+      <div className="form-card">
+        <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 16 }}>
+          Analisi psicologica completa basata su tutti i tuoi ricordi.
+          Identifica pattern cognitivi, tensioni irrisolte e risorse emotive.
+        </p>
+        <div className="form-actions">
+          <button className="btn-primary" onClick={handleIntrospect} disabled={loading}>
+            {loading ? <><span className="loading" /> Analyzing...</> : '@ Introspect'}
+          </button>
+        </div>
+      </div>
+
+      {error && (
+        <div className="response-area visible error" style={{ marginTop: 12 }}>
+          <div className="response-label">Errore</div>
+          {error}
+        </div>
+      )}
+
+      {result && (
+        <div className="response-area visible" style={{ marginTop: 12 }}>
+          <div className="response-label">Ritratto Psicologico</div>
+          <div style={{ whiteSpace: 'pre-wrap' }}>{result.portrait}</div>
+          {result.dominantConcepts.length > 0 && (
+            <div style={{ marginTop: 12, fontSize: 12, color: 'var(--muted)' }}>
+              <strong>Concetti dominanti:</strong> {result.dominantConcepts.join(', ')}
+            </div>
+          )}
+          <div style={{ marginTop: 4, fontSize: 12, color: 'var(--muted)' }}>
+            Basato su {result.totalMemories} ricordi
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function BrainPage() {
   const [tab, setTab] = useState('ask');
 
@@ -74,7 +142,7 @@ export default function BrainPage() {
       <div className="view-header">
         <h1>Brain</h1>
         <p className="view-desc">
-          Il cervello cognitivo di MNHEME: interroga, rifletti, ricorda manualmente, sogna.
+          Il cervello cognitivo di MNHEME: interroga, rifletti, ricorda manualmente, sogna, analizza.
         </p>
       </div>
 
@@ -91,12 +159,16 @@ export default function BrainPage() {
         <button className={`tab-btn ${tab === 'dream' ? 'active' : ''}`} onClick={() => setTab('dream')}>
           Dream
         </button>
+        <button className={`tab-btn ${tab === 'introspect' ? 'active' : ''}`} onClick={() => setTab('introspect')}>
+          Introspect
+        </button>
       </div>
 
-      {tab === 'ask'      && <Ask />}
-      {tab === 'reflect'  && <Reflect />}
-      {tab === 'remember' && <Remember />}
-      {tab === 'dream'    && <DreamPanel />}
+      {tab === 'ask'        && <Ask />}
+      {tab === 'reflect'    && <Reflect />}
+      {tab === 'remember'   && <Remember />}
+      {tab === 'dream'      && <DreamPanel />}
+      {tab === 'introspect' && <IntrospectPanel />}
     </div>
   );
 }

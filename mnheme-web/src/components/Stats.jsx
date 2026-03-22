@@ -1,4 +1,4 @@
-import { FEELING_LABELS, FEELING_COLORS } from '../core/constants';
+import { FEELINGS, FEELING_LABELS, FEELING_COLORS } from '../core/constants';
 import { useMemoryDB } from '../hooks/useMemoryDB';
 
 export default function Stats() {
@@ -28,7 +28,7 @@ export default function Stats() {
         <div className="stat-card">
           <div className="stat-label">FEELINGS USED</div>
           <div className="stat-value">{Object.keys(dist).length}</div>
-          <div className="stat-sub">of 15 total</div>
+          <div className="stat-sub">of {FEELINGS.length} total</div>
         </div>
         <div className="stat-card">
           <div className="stat-label">STORAGE</div>
