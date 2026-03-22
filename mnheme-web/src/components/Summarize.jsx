@@ -3,19 +3,21 @@ import { useBrain } from '../hooks/useBrain';
 import { useMemoryDB } from '../hooks/useMemoryDB';
 import { FEELINGS, FEELING_LABELS } from '../core/constants';
 import SectionGuide from './SectionGuide';
-
-const STYLES = [
-  { value: 'narrativo', label: 'Narrativo', desc: 'Prima persona, fluido, continuo.' },
-  { value: 'analitico', label: 'Analitico', desc: 'Pattern, cause, temi. Tono oggettivo.' },
-  { value: 'poetico', label: 'Poetico', desc: 'Prosa poetica. Immagini, ritmo, emozione.' },
-];
+import { useI18n } from '../i18n/index.jsx';
 
 export default function Summarize() {
   const { listConcepts } = useMemoryDB();
   const { summarize, loading, error } = useBrain();
   const db = useMemoryDB();
+  const { t } = useI18n();
 
   const concepts = listConcepts();
+
+  const STYLES = [
+    { value: 'narrativo', label: t('summarize.styleNarrative'), desc: t('summarize.styleNarrativeDesc') },
+    { value: 'analitico', label: t('summarize.styleAnalytical'), desc: t('summarize.styleAnalyticalDesc') },
+    { value: 'poetico', label: t('summarize.stylePoetic'), desc: t('summarize.stylePoeticDesc') },
+  ];
 
   const [concept, setConcept] = useState('');
   const [feeling, setFeeling] = useState('');
@@ -52,32 +54,27 @@ export default function Summarize() {
 
   return (
     <div>
-      <SectionGuide title="Come funziona Summarize?">
-        <p>
-          <strong>Summarize</strong> prende un gruppo di ricordi e li riassume in uno dei tre stili
-          disponibili, mantenendo la complessità emotiva senza semplificare.
-        </p>
+      <SectionGuide title={t('summarize.guideTitle')}>
+        <p dangerouslySetInnerHTML={{ __html: t('summarize.guideIntro') }} />
         <ol className="guide-steps">
-          <li>Scegli opzionalmente un concetto e/o un sentimento per filtrare i ricordi</li>
-          <li>Seleziona lo stile: <em>Narrativo</em> (racconto in prima persona),
-              <em>Analitico</em> (analisi di pattern) o <em>Poetico</em> (prosa evocativa)</li>
-          <li>L'IA elabora tutti i ricordi selezionati e produce un riassunto coerente</li>
+          <li>{t('summarize.guideStep1')}</li>
+          <li dangerouslySetInnerHTML={{ __html: t('summarize.guideStep2') }} />
+          <li>{t('summarize.guideStep3')}</li>
         </ol>
         <div className="guide-note">
-          Senza filtri, il sistema usa i ricordi più recenti (fino al limite impostato).
-          Puoi combinare concetto e sentimento per un riassunto molto specifico.
+          {t('summarize.guideNote')}
         </div>
       </SectionGuide>
 
       <form onSubmit={handleSubmit} className="form-card">
         <div className="form-row">
           <div className="field">
-            <label>CONCETTO <span className="optional">opzionale</span></label>
+            <label>{t('summarize.conceptLabel')} <span className="optional">{t('summarize.conceptOptional')}</span></label>
             <input
               type="text"
               value={concept}
               onChange={e => setConcept(e.target.value)}
-              placeholder="tutti i concetti"
+              placeholder={t('summarize.conceptPlaceholder')}
               list="sum-concept-list"
             />
             <datalist id="sum-concept-list">
@@ -87,9 +84,9 @@ export default function Summarize() {
             </datalist>
           </div>
           <div className="field">
-            <label>SENTIMENTO <span className="optional">opzionale</span></label>
+            <label>{t('summarize.feelingLabel')} <span className="optional">{t('summarize.feelingOptional')}</span></label>
             <select value={feeling} onChange={e => setFeeling(e.target.value)}>
-              <option value="">Tutti</option>
+              <option value="">{t('summarize.feelingAll')}</option>
               {FEELINGS.map(f => (
                 <option key={f} value={f}>
                   {FEELING_LABELS[f] || f}
@@ -101,7 +98,7 @@ export default function Summarize() {
 
         <div className="form-row">
           <div className="field">
-            <label>STILE</label>
+            <label>{t('summarize.styleLabel')}</label>
             <select value={style} onChange={e => setStyle(e.target.value)}>
               {STYLES.map(s => (
                 <option key={s.value} value={s.value}>{s.label}</option>
@@ -112,7 +109,7 @@ export default function Summarize() {
             </span>
           </div>
           <div className="field">
-            <label>MAX RICORDI</label>
+            <label>{t('summarize.maxMemories')}</label>
             <input
               type="number"
               value={limit}
@@ -126,8 +123,8 @@ export default function Summarize() {
         <div className="form-actions">
           <button type="submit" className="btn-primary" disabled={loading}>
             {loading
-              ? <><span className="loading" /> Riassumendo...</>
-              : <><span style={{ fontWeight: 700 }}>{'\u2261'}</span> Summarize</>
+              ? <><span className="loading" /> {t('summarize.btnLoading')}</>
+              : <><span style={{ fontWeight: 700 }}>{'\u2261'}</span> {t('summarize.btn')}</>
             }
           </button>
         </div>
@@ -135,7 +132,7 @@ export default function Summarize() {
 
       {error && (
         <div className="response-area visible error" style={{ marginTop: 12 }}>
-          <div className="response-label">Errore</div>
+          <div className="response-label">{t('summarize.error')}</div>
           {error}
         </div>
       )}
@@ -143,12 +140,12 @@ export default function Summarize() {
       {result && (
         <div className="response-area visible" style={{ marginTop: 12 }}>
           <div className="response-label">
-            Riassunto &mdash; {style}
+            {t('summarize.resultLabel')} &mdash; {style}
           </div>
           <div className="summarize-meta">
-            {concept && <span>Concetto: {concept}</span>}
-            {feeling && <span>Sentimento: {feeling}</span>}
-            <span>{memoriesUsed} ricordi utilizzati</span>
+            {concept && <span>{t('summarize.resultConcept')}: {concept}</span>}
+            {feeling && <span>{t('summarize.resultFeeling')}: {feeling}</span>}
+            <span>{memoriesUsed} {t('summarize.memoriesUsed')}</span>
           </div>
           <div style={{ whiteSpace: 'pre-wrap', marginTop: 12 }}>{result}</div>
         </div>

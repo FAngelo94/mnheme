@@ -2,10 +2,12 @@ import { useState, useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import InstallBanner from './InstallBanner';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const { t } = useI18n();
 
   const openSidebar  = useCallback(() => setSidebarOpen(true), []);
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
@@ -32,7 +34,7 @@ export default function Layout({ children }) {
         <button
           className="hamburger-btn"
           onClick={openSidebar}
-          aria-label="Open menu"
+          aria-label={t('layout.openMenu')}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <line x1="3" y1="6" x2="21" y2="6" />
@@ -43,7 +45,7 @@ export default function Layout({ children }) {
         <img src="/logo.png" alt="MNHEME" className="mobile-header-logo" />
         <div>
           <div className="mobile-header-title">MNHEME</div>
-          <div className="mobile-header-sub">Memory Journal</div>
+          <div className="mobile-header-sub">{t('layout.subtitle')}</div>
         </div>
       </div>
 

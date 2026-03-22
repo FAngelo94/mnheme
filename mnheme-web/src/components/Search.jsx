@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useMemoryDB } from '../hooks/useMemoryDB';
 import MemoryList from './MemoryList';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function Search() {
   const { search, recallByTag } = useMemoryDB();
+  const { t } = useI18n();
   const [query, setQuery]       = useState('');
   const [tagQuery, setTagQuery] = useState('');
   const [results, setResults]   = useState(null);
@@ -14,14 +16,14 @@ export default function Search() {
     if (!query.trim()) return;
     const mems = search(query.trim(), { limit: 50 });
     setResults(mems);
-    setInfo(`${mems.length} risultati per "${query.trim()}"`);
+    setInfo(`${mems.length} ${t('search.resultsFor')} "${query.trim()}"`);
   };
 
   const doTagSearch = () => {
     if (!tagQuery.trim()) return;
     const mems = recallByTag(tagQuery.trim(), { limit: 50 });
     setResults(mems);
-    setInfo(`${mems.length} ricordi con tag #${tagQuery.trim()}`);
+    setInfo(`${mems.length} ${t('search.memoriesWithTag')} #${tagQuery.trim()}`);
   };
 
   return (
@@ -31,22 +33,22 @@ export default function Search() {
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="Cerca nei ricordi..."
+          placeholder={t('search.placeholder')}
           autoComplete="off"
         />
-        <button type="submit" className="btn-primary">Search</button>
+        <button type="submit" className="btn-primary">{t('search.btn')}</button>
       </form>
 
       <div className="tag-search-row">
-        <span className="tag-search-label">Per tag:</span>
+        <span className="tag-search-label">{t('search.tagLabel')}</span>
         <input
           type="text"
           value={tagQuery}
           onChange={e => setTagQuery(e.target.value)}
-          placeholder="casa, lavoro, urgente..."
+          placeholder={t('search.tagPlaceholder')}
           onKeyDown={e => e.key === 'Enter' && doTagSearch()}
         />
-        <button className="btn-ghost" onClick={doTagSearch} type="button">Tag search</button>
+        <button className="btn-ghost" onClick={doTagSearch} type="button">{t('search.tagBtn')}</button>
       </div>
 
       {info && (

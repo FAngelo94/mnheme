@@ -1,9 +1,11 @@
 import { FEELING_LABELS, FEELING_COLORS } from '../core/constants';
+import { useI18n } from '../i18n/index.jsx';
 
-function formatDate(iso) {
+function formatDate(iso, locale) {
   if (!iso) return '';
   const d = new Date(iso);
-  return d.toLocaleDateString('en-GB', {
+  const loc = locale === 'it' ? 'it-IT' : 'en-GB';
+  return d.toLocaleDateString(loc, {
     day: '2-digit', month: 'short', year: 'numeric',
     hour: '2-digit', minute: '2-digit',
   });
@@ -11,6 +13,7 @@ function formatDate(iso) {
 
 export default function MemoryCard({ memory, style }) {
   const feelingColor = FEELING_COLORS[memory.feeling] || '#4ade80';
+  const { locale } = useI18n();
 
   return (
     <div className="memory-card" style={style}>
@@ -25,7 +28,7 @@ export default function MemoryCard({ memory, style }) {
         <span className="memory-mediatype">
           {(memory.media_type || 'text').toUpperCase()}
         </span>
-        <span className="memory-ts">{formatDate(memory.timestamp)}</span>
+        <span className="memory-ts">{formatDate(memory.timestamp, locale)}</span>
       </div>
       <div className="memory-content">{memory.content}</div>
       {memory.note && (

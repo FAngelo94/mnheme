@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { FEELING_LABELS, FEELING_COLORS } from '../core/constants';
 import { useMemoryDB } from '../hooks/useMemoryDB';
+import { useI18n } from '../i18n/index.jsx';
 
-function formatDate(iso) {
+function formatDate(iso, locale) {
   if (!iso) return '';
   const d = new Date(iso);
-  return d.toLocaleDateString('en-GB', {
+  const loc = locale === 'it' ? 'it-IT' : 'en-GB';
+  return d.toLocaleDateString(loc, {
     day: '2-digit', month: 'short', year: 'numeric',
     hour: '2-digit', minute: '2-digit',
   });
@@ -13,6 +15,7 @@ function formatDate(iso) {
 
 export default function Timeline() {
   const { conceptTimeline, listConcepts } = useMemoryDB();
+  const { t, locale } = useI18n();
   const [concept, setConcept]   = useState('');
   const [entries, setEntries]   = useState(null);
 
@@ -29,12 +32,12 @@ export default function Timeline() {
     <div>
       <form onSubmit={loadTimeline} className="filter-bar">
         <div className="filter-group" style={{ flex: 1 }}>
-          <label>CONCEPT</label>
+          <label>{t('timeline.conceptLabel')}</label>
           <input
             type="text"
             value={concept}
             onChange={e => setConcept(e.target.value)}
-            placeholder="Debito, Famiglia, Lavoro..."
+            placeholder={t('timeline.conceptPlaceholder')}
             list="tl-concept-list"
           />
           <datalist id="tl-concept-list">
@@ -43,17 +46,17 @@ export default function Timeline() {
             ))}
           </datalist>
         </div>
-        <button type="submit" className="btn-primary">Load timeline</button>
+        <button type="submit" className="btn-primary">{t('timeline.btnLoad')}</button>
       </form>
 
       {entries !== null && entries.length === 0 && (
-        <div className="empty-state">Nessun dato per "{concept}"</div>
+        <div className="empty-state">{t('timeline.noData')} "{concept}"</div>
       )}
 
       {entries && entries.length > 0 && (
         <div>
           <div style={{ marginBottom: 14, fontSize: 11, color: 'var(--muted)', letterSpacing: '0.1em' }}>
-            {entries.length} entries for <span style={{ color: 'var(--accent)' }}>{concept}</span>
+            {entries.length} {t('timeline.entriesFor')} <span style={{ color: 'var(--accent)' }}>{concept}</span>
           </div>
           <div className="timeline-track">
             {entries.map((entry, i) => {
@@ -69,15 +72,15 @@ export default function Timeline() {
                       >
                         {FEELING_LABELS[entry.feeling] || entry.feeling}
                       </span>
-                      <span className="timeline-ts">{formatDate(entry.timestamp)}</span>
+                      <span className="timeline-ts">{formatDate(entry.timestamp, locale)}</span>
                     </div>
                     {entry.note && (
                       <div className="timeline-note">{entry.note}</div>
                     )}
                     {entry.tags.length > 0 && (
                       <div className="timeline-tags">
-                        {entry.tags.map((t, j) => (
-                          <span key={j} className="memory-tag">{t}</span>
+                        {entry.tags.map((tg, j) => (
+                          <span key={j} className="memory-tag">{tg}</span>
                         ))}
                       </div>
                     )}

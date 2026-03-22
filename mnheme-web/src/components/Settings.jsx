@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useSettings } from '../hooks/useSettings';
 import { PROVIDER_PRESETS } from '../core/constants';
 import SectionGuide from './SectionGuide';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function Settings() {
   const { settings, updateSettings, testConnection, isConfigured } = useSettings();
+  const { t } = useI18n();
   const [testing, setTesting]     = useState(false);
   const [testResult, setTestResult] = useState(null);
 
@@ -33,91 +35,84 @@ export default function Settings() {
 
   return (
     <div>
-      <SectionGuide title="Quali provider LLM sono gratuiti?">
-        <p>
-          MNHEME funziona con qualsiasi provider LLM. Ecco i migliori <strong>gratuiti</strong>,
-          divisi per categoria.
-        </p>
+      <SectionGuide title={t('settings.guideTitle')}>
+        <p dangerouslySetInnerHTML={{ __html: t('settings.guideIntro') }} />
 
-        <p style={{ marginTop: 12, marginBottom: 4 }}><strong>Gratuiti e locali (nessun limite)</strong></p>
+        <p style={{ marginTop: 12, marginBottom: 4 }}><strong>{t('settings.guideFreeLocal')}</strong></p>
         <div className="guide-provider-grid">
           <div className="guide-provider-card">
             <div className="guide-provider-name">LM Studio</div>
-            <div className="guide-provider-detail">GUI desktop, modelli GGUF da HuggingFace. Nessuna API key necessaria. Limite = solo il tuo hardware.</div>
-            <div className="guide-provider-tag free">Gratuito</div>
+            <div className="guide-provider-detail">{t('settings.lmStudioDesc')}</div>
+            <div className="guide-provider-tag free">{t('settings.tagFree')}</div>
           </div>
           <div className="guide-provider-card">
             <div className="guide-provider-name">Ollama</div>
-            <div className="guide-provider-detail">CLI, supporta Llama, Mistral, DeepSeek, Qwen, Gemma e altri. Nessuna API key. Limite = solo il tuo hardware.</div>
-            <div className="guide-provider-tag free">Gratuito</div>
+            <div className="guide-provider-detail">{t('settings.ollamaDesc')}</div>
+            <div className="guide-provider-tag free">{t('settings.tagFree')}</div>
           </div>
         </div>
 
-        <p style={{ marginTop: 16, marginBottom: 4 }}><strong>Free tier cloud (non scadono)</strong></p>
+        <p style={{ marginTop: 16, marginBottom: 4 }}><strong>{t('settings.guideFreeCloud')}</strong></p>
         <div className="guide-provider-grid">
           <div className="guide-provider-card">
             <div className="guide-provider-name">Google AI Studio</div>
-            <div className="guide-provider-detail">Il free tier più generoso. Gemini 2.5 Pro: 5 RPM, 100 richieste/giorno. Flash: 10 RPM, 250/giorno. Context 1M token.</div>
-            <div className="guide-provider-tag free">Gratuito</div>
+            <div className="guide-provider-detail">{t('settings.googleDesc')}</div>
+            <div className="guide-provider-tag free">{t('settings.tagFree')}</div>
           </div>
           <div className="guide-provider-card">
             <div className="guide-provider-name">Mistral</div>
-            <div className="guide-provider-detail">Piano "Experiment": 1 miliardo di token/mese. Tutti i modelli inclusi, anche Codestral. Solo verifica telefono.</div>
-            <div className="guide-provider-tag free">Gratuito</div>
+            <div className="guide-provider-detail">{t('settings.mistralDesc')}</div>
+            <div className="guide-provider-tag free">{t('settings.tagFree')}</div>
           </div>
           <div className="guide-provider-card">
             <div className="guide-provider-name">Groq</div>
-            <div className="guide-provider-detail">~30 RPM. LLaMA 3.3 70B: ~500K token/giorno. Velocità eccezionale: inference hardware dedicato.</div>
-            <div className="guide-provider-tag free">Gratuito</div>
+            <div className="guide-provider-detail">{t('settings.groqDesc')}</div>
+            <div className="guide-provider-tag free">{t('settings.tagFree')}</div>
           </div>
           <div className="guide-provider-card">
             <div className="guide-provider-name">Cerebras</div>
-            <div className="guide-provider-detail">1M token/giorno. Inference ultra-rapida a 2600+ token/sec. Context fino a 64K.</div>
-            <div className="guide-provider-tag free">Gratuito</div>
+            <div className="guide-provider-detail">{t('settings.cerebrasDesc')}</div>
+            <div className="guide-provider-tag free">{t('settings.tagFree')}</div>
           </div>
           <div className="guide-provider-card">
             <div className="guide-provider-name">OpenRouter</div>
-            <div className="guide-provider-detail">~27 modelli gratuiti (ID con suffisso :free). 20 RPM, 50 richieste/giorno sui modelli free.</div>
-            <div className="guide-provider-tag free">Gratuito</div>
+            <div className="guide-provider-detail">{t('settings.openrouterDesc')}</div>
+            <div className="guide-provider-tag free">{t('settings.tagFree')}</div>
           </div>
         </div>
 
-        <p style={{ marginTop: 16, marginBottom: 4 }}><strong>Crediti iniziali (si esauriscono)</strong></p>
+        <p style={{ marginTop: 16, marginBottom: 4 }}><strong>{t('settings.guideCredits')}</strong></p>
         <div className="guide-provider-grid">
           <div className="guide-provider-card">
             <div className="guide-provider-name">Together AI</div>
-            <div className="guide-provider-detail">Fino a $100 in crediti alla registrazione. Ampia scelta di modelli open-source.</div>
-            <div className="guide-provider-tag credits">$100 crediti</div>
+            <div className="guide-provider-detail">{t('settings.togetherDesc')}</div>
+            <div className="guide-provider-tag credits">{t('settings.tagCredits100')}</div>
           </div>
           <div className="guide-provider-card">
             <div className="guide-provider-name">Anthropic</div>
-            <div className="guide-provider-detail">$5 alla registrazione. Claude Haiku, Sonnet, Opus. Studenti: fino a $300.</div>
-            <div className="guide-provider-tag credits">$5 crediti</div>
+            <div className="guide-provider-detail">{t('settings.anthropicDesc')}</div>
+            <div className="guide-provider-tag credits">{t('settings.tagCredits5')}</div>
           </div>
           <div className="guide-provider-card">
             <div className="guide-provider-name">SambaNova</div>
-            <div className="guide-provider-detail">$5 crediti (~30M token su Llama 8B). Scadenza: 30 giorni.</div>
-            <div className="guide-provider-tag credits">$5 / 30gg</div>
+            <div className="guide-provider-detail">{t('settings.sambanovaDesc')}</div>
+            <div className="guide-provider-tag credits">{t('settings.tagCredits5_30')}</div>
           </div>
           <div className="guide-provider-card">
             <div className="guide-provider-name">Fireworks AI</div>
-            <div className="guide-provider-detail">$1 in crediti iniziali. Modelli a partire da $0.20/M token.</div>
-            <div className="guide-provider-tag credits">$1 crediti</div>
+            <div className="guide-provider-detail">{t('settings.fireworksDesc')}</div>
+            <div className="guide-provider-tag credits">{t('settings.tagCredits1')}</div>
           </div>
         </div>
 
-        <div className="guide-note" style={{ marginTop: 14 }}>
-          <strong>Consiglio:</strong> per iniziare senza costi, usa LM Studio o Ollama in locale.
-          Come fallback cloud, Google AI Studio e Groq sono le scelte migliori.
-          Seleziona un preset dal menu qui sotto per configurare automaticamente l'URL.
-        </div>
+        <div className="guide-note" style={{ marginTop: 14 }} dangerouslySetInnerHTML={{ __html: t('settings.guideTip') }} />
       </SectionGuide>
 
       <div className="form-card">
         <div className="field">
-          <label>PROVIDER PRESET</label>
+          <label>{t('settings.presetLabel')}</label>
           <select onChange={handlePreset} defaultValue="">
-            <option value="">-- Scegli un preset --</option>
+            <option value="">{t('settings.presetPlaceholder')}</option>
             {Object.keys(PROVIDER_PRESETS).map(name => (
               <option key={name} value={name}>{name}</option>
             ))}
@@ -126,7 +121,7 @@ export default function Settings() {
 
         <div className="form-row">
           <div className="field">
-            <label>ENDPOINT URL <span className="required">*</span></label>
+            <label>{t('settings.urlLabel')} <span className="required">*</span></label>
             <input
               type="text" name="url"
               value={settings.url || ''}
@@ -135,7 +130,7 @@ export default function Settings() {
             />
           </div>
           <div className="field">
-            <label>MODEL <span className="required">*</span></label>
+            <label>{t('settings.modelLabel')} <span className="required">*</span></label>
             <input
               type="text" name="model"
               value={settings.model || ''}
@@ -146,7 +141,7 @@ export default function Settings() {
         </div>
 
         <div className="field">
-          <label>API KEY <span className="optional">opzionale per provider locali</span></label>
+          <label>{t('settings.apiKeyLabel')} <span className="optional">{t('settings.apiKeyOptional')}</span></label>
           <input
             type="password" name="apiKey"
             value={settings.apiKey || ''}
@@ -158,7 +153,7 @@ export default function Settings() {
 
         <div className="form-row">
           <div className="field">
-            <label>TEMPERATURE</label>
+            <label>{t('settings.temperatureLabel')}</label>
             <input
               type="number" name="temperature"
               value={settings.temperature ?? 0.3}
@@ -167,7 +162,7 @@ export default function Settings() {
             />
           </div>
           <div className="field">
-            <label>MAX TOKENS</label>
+            <label>{t('settings.maxTokensLabel')}</label>
             <input
               type="number" name="maxTokens"
               value={settings.maxTokens ?? 2048}
@@ -183,7 +178,7 @@ export default function Settings() {
             onClick={handleTest}
             disabled={testing || !isConfigured}
           >
-            {testing ? <><span className="loading" /> Testing...</> : '@ Test Connection'}
+            {testing ? <><span className="loading" /> {t('settings.btnTesting')}</> : t('settings.btnTest')}
           </button>
         </div>
       </div>
@@ -191,34 +186,34 @@ export default function Settings() {
       {testResult && (
         <div className={`response-area visible ${testResult.ok ? '' : 'error'}`}>
           <div className="response-label">
-            {testResult.ok ? 'Connessione riuscita' : 'Connessione fallita'}
+            {testResult.ok ? t('settings.testSuccess') : t('settings.testFail')}
           </div>
           {testResult.ok
-            ? `Il provider ha risposto: "${testResult.reply}"`
+            ? `${t('settings.testReply')} "${testResult.reply}"`
             : testResult.error
           }
         </div>
       )}
 
       <div className="form-card" style={{ marginTop: 20 }}>
-        <div className="section-title" style={{ marginBottom: 12 }}>STATO CONFIGURAZIONE</div>
+        <div className="section-title" style={{ marginBottom: 12 }}>{t('settings.configTitle')}</div>
         <div className="storage-row">
-          <span className="storage-key">Provider</span>
+          <span className="storage-key">{t('settings.configProvider')}</span>
           <span className="storage-val">
-            {settings.url ? (settings.url.includes('anthropic') ? 'Anthropic' : 'OpenAI-compatible') : '—'}
+            {settings.url ? (settings.url.includes('anthropic') ? 'Anthropic' : 'OpenAI-compatible') : '\u2014'}
           </span>
         </div>
         <div className="storage-row">
-          <span className="storage-key">URL</span>
-          <span className="storage-val">{settings.url || '—'}</span>
+          <span className="storage-key">{t('settings.configUrl')}</span>
+          <span className="storage-val">{settings.url || '\u2014'}</span>
         </div>
         <div className="storage-row">
-          <span className="storage-key">Model</span>
-          <span className="storage-val">{settings.model || '—'}</span>
+          <span className="storage-key">{t('settings.configModel')}</span>
+          <span className="storage-val">{settings.model || '\u2014'}</span>
         </div>
         <div className="storage-row">
-          <span className="storage-key">API Key</span>
-          <span className="storage-val">{settings.apiKey ? '****' + settings.apiKey.slice(-4) : '—'}</span>
+          <span className="storage-key">{t('settings.configApiKey')}</span>
+          <span className="storage-val">{settings.apiKey ? '****' + settings.apiKey.slice(-4) : '\u2014'}</span>
         </div>
       </div>
     </div>

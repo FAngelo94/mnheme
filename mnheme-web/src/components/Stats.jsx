@@ -1,8 +1,10 @@
 import { FEELINGS, FEELING_LABELS, FEELING_COLORS } from '../core/constants';
 import { useMemoryDB } from '../hooks/useMemoryDB';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function Stats() {
   const { count, listConcepts, feelingDistribution, storageInfo, listFeelings, revision } = useMemoryDB();
+  const { t } = useI18n();
 
   const total    = count();
   const concepts = listConcepts();
@@ -18,20 +20,20 @@ export default function Stats() {
       {/* Stat cards */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-label">TOTAL MEMORIES</div>
+          <div className="stat-label">{t('stats.totalMemories')}</div>
           <div className="stat-value">{total.toLocaleString()}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">CONCEPTS</div>
+          <div className="stat-label">{t('stats.concepts')}</div>
           <div className="stat-value">{concepts.length}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">FEELINGS USED</div>
+          <div className="stat-label">{t('stats.feelingsUsed')}</div>
           <div className="stat-value">{Object.keys(dist).length}</div>
-          <div className="stat-sub">of {FEELINGS.length} total</div>
+          <div className="stat-sub">{t('stats.ofTotal')} {FEELINGS.length} {t('stats.total')}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">STORAGE</div>
+          <div className="stat-label">{t('stats.storage')}</div>
           <div className="stat-value">{storage.storage_size_kb} KB</div>
           <div className="stat-sub">localStorage</div>
         </div>
@@ -40,7 +42,7 @@ export default function Stats() {
       {/* Feeling distribution bars */}
       {sortedDist.length > 0 && (
         <div className="chart-section">
-          <div className="section-title">DISTRIBUZIONE EMOTIVA</div>
+          <div className="section-title">{t('stats.emotionalDistribution')}</div>
           {sortedDist.map(([feeling, n]) => (
             <div className="bar-row" key={feeling}>
               <span className="bar-label" style={{ color: FEELING_COLORS[feeling] }}>
@@ -65,12 +67,14 @@ export default function Stats() {
       {/* Concept grid */}
       {concepts.length > 0 && (
         <div className="chart-section">
-          <div className="section-title">CONCETTI</div>
+          <div className="section-title">{t('stats.conceptsSection')}</div>
           <div className="concepts-grid">
             {concepts.map(c => (
               <div className="concept-card" key={c.concept}>
                 <div className="concept-name">{c.concept}</div>
-                <div className="concept-count">{c.total} {c.total === 1 ? 'memory' : 'memories'}</div>
+                <div className="concept-count">
+                  {c.total} {c.total === 1 ? t('stats.memorySingular') : t('stats.memoryPlural')}
+                </div>
                 <div className="concept-feelings">
                   {Object.entries(c.feelings).map(([f, n]) => (
                     <span
@@ -91,7 +95,7 @@ export default function Stats() {
       {/* Feelings detail */}
       {feelings.length > 0 && (
         <div className="chart-section">
-          <div className="section-title">SENTIMENTI - CONCETTI ASSOCIATI</div>
+          <div className="section-title">{t('stats.feelingsConceptsSection')}</div>
           <div className="feelings-grid">
             {feelings.map(f => (
               <div className="feeling-concept-card" key={f.feeling}>

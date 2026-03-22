@@ -2,33 +2,32 @@ import Perceive from '../components/Perceive';
 import MemoryList from '../components/MemoryList';
 import SectionGuide from '../components/SectionGuide';
 import { useMemoryDB } from '../hooks/useMemoryDB';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function HomePage() {
   const { recallAll, revision } = useMemoryDB();
+  const { t } = useI18n();
   const recentMemories = recallAll({ limit: 5 });
 
   return (
     <div>
       <div className="view-header">
-        <h1>Perceive</h1>
+        <h1>{t('perceive.title')}</h1>
         <p className="view-desc">
-          Scrivi liberamente. Il cervello di MNHEME analizza, cataloga e arricchisce il ricordo.
+          {t('perceive.desc')}
         </p>
       </div>
 
-      <SectionGuide title="Come funziona Perceive?">
-        <p>
-          <strong>Perceive</strong> trasforma i tuoi pensieri grezzi in ricordi strutturati.
-          È l'unica funzione che <em>scrive</em> nel tuo diario.
-        </p>
+      <SectionGuide title={t('perceive.guideTitle')}>
+        <p dangerouslySetInnerHTML={{ __html: t('perceive.guideIntro') }} />
         <ol className="guide-steps">
-          <li>Scrivi liberamente quello che stai vivendo, pensando o provando</li>
-          <li>L'intelligenza artificiale analizza il testo ed estrae un <strong>concetto chiave</strong> (es. "Famiglia", "Lavoro"), un <strong>sentimento</strong> e dei <strong>tag</strong> tematici</li>
-          <li>Il testo viene riscritto con maggiore profondità psicologica</li>
-          <li>Il ricordo viene salvato in modo permanente e immutabile &mdash; non potrà mai essere modificato o cancellato</li>
+          <li>{t('perceive.guideStep1')}</li>
+          <li dangerouslySetInnerHTML={{ __html: t('perceive.guideStep2') }} />
+          <li>{t('perceive.guideStep3')}</li>
+          <li dangerouslySetInnerHTML={{ __html: t('perceive.guideStep4') }} />
         </ol>
         <div className="guide-note">
-          I 15 sentimenti riconosciuti sono: gioia, tristezza, rabbia, paura, nostalgia, amore, malinconia, serenità, sorpresa, ansia, gratitudine, vergogna, orgoglio, noia, curiosità.
+          {t('perceive.guideNote')}
         </div>
       </SectionGuide>
 
@@ -36,7 +35,7 @@ export default function HomePage() {
 
       {recentMemories.length > 0 && (
         <div style={{ marginTop: 32 }}>
-          <div className="section-title">ULTIMI RICORDI</div>
+          <div className="section-title">{t('perceive.recentTitle')}</div>
           <MemoryList memories={recentMemories} />
         </div>
       )}

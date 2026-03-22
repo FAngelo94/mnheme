@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react';
 import { useMemoryDB } from '../hooks/useMemoryDB';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function ExportImport() {
   const { exportJSON, importJSON, refresh } = useMemoryDB();
+  const { t } = useI18n();
   const fileRef = useRef(null);
   const [status, setStatus]   = useState(null);
   const [loading, setLoading] = useState(false);
@@ -17,7 +19,7 @@ export default function ExportImport() {
     a.download = `mnheme_export_${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    setStatus({ type: 'success', msg: `Esportati ${count} ricordi.` });
+    setStatus({ type: 'success', msg: t('exportImport.exportSuccess').replace('{count}', count) });
   };
 
   const handleImport = async (e) => {
@@ -32,9 +34,9 @@ export default function ExportImport() {
       const data = JSON.parse(text);
       const count = await importJSON(data);
       refresh();
-      setStatus({ type: 'success', msg: `Importati ${count} nuovi ricordi.` });
+      setStatus({ type: 'success', msg: t('exportImport.importSuccess').replace('{count}', count) });
     } catch (err) {
-      setStatus({ type: 'error', msg: `Errore importazione: ${err.message}` });
+      setStatus({ type: 'error', msg: t('exportImport.importError').replace('{error}', err.message) });
     } finally {
       setLoading(false);
       if (fileRef.current) fileRef.current.value = '';
@@ -44,24 +46,24 @@ export default function ExportImport() {
   return (
     <div>
       <div className="form-card">
-        <div className="section-title" style={{ marginBottom: 16 }}>ESPORTA</div>
+        <div className="section-title" style={{ marginBottom: 16 }}>{t('exportImport.exportTitle')}</div>
         <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 16 }}>
-          Scarica tutti i ricordi come file JSON. Utile per backup o migrazione.
+          {t('exportImport.exportDesc')}
         </p>
         <div className="form-actions">
           <button className="btn-primary" onClick={handleExport}>
-            Export JSON
+            {t('exportImport.exportBtn')}
           </button>
         </div>
       </div>
 
       <div className="form-card" style={{ marginTop: 20 }}>
-        <div className="section-title" style={{ marginBottom: 16 }}>IMPORTA</div>
+        <div className="section-title" style={{ marginBottom: 16 }}>{t('exportImport.importTitle')}</div>
         <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 16 }}>
-          Importa ricordi da un file JSON esportato. I duplicati (stesso memory_id) vengono ignorati.
+          {t('exportImport.importDesc')}
         </p>
         <div className="field">
-          <label>FILE JSON</label>
+          <label>{t('exportImport.importFileLabel')}</label>
           <input
             type="file"
             accept=".json"
@@ -73,7 +75,7 @@ export default function ExportImport() {
         </div>
         {loading && (
           <div style={{ fontSize: 12, color: 'var(--amber)' }}>
-            <span className="loading" /> Importazione in corso...
+            <span className="loading" /> {t('exportImport.importLoading')}
           </div>
         )}
       </div>
@@ -82,7 +84,7 @@ export default function ExportImport() {
         <div className={`response-area visible ${status.type === 'error' ? 'error' : ''}`}
              style={{ marginTop: 16 }}>
           <div className="response-label">
-            {status.type === 'success' ? 'Completato' : 'Errore'}
+            {status.type === 'success' ? t('exportImport.completed') : t('exportImport.errorLabel')}
           </div>
           {status.msg}
         </div>

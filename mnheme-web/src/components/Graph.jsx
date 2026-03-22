@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import { FEELINGS, FEELING_COLORS } from '../core/constants';
 import { useMemoryDB } from '../hooks/useMemoryDB';
 import SectionGuide from './SectionGuide';
+import { useI18n } from '../i18n/index.jsx';
 
 // ── Graph-specific feeling colors (more vibrant for nodes) ──
 const GRAPH_FEELING_COLORS = {
@@ -106,7 +107,7 @@ function buildGraphData(memories, mode) {
 }
 
 // ── Legend Component ──
-function GraphLegend({ mode, memories }) {
+function GraphLegend({ mode, memories, t }) {
   const items = [];
 
   if (mode === 'feeling' || mode === 'all') {
@@ -122,9 +123,9 @@ function GraphLegend({ mode, memories }) {
   }
 
   const kindLabels = {
-    concept: ['#4d96ff', 'Hub concetto'],
-    feeling: ['#ff6b9d', 'Hub sentimento'],
-    tag: ['#ffd93d', 'Hub tag'],
+    concept: ['#4d96ff', t('graph.legendConceptHub')],
+    feeling: ['#ff6b9d', t('graph.legendFeelingHub')],
+    tag: ['#ffd93d', t('graph.legendTagHub')],
   };
 
   if (mode === 'all') {
@@ -144,7 +145,7 @@ function GraphLegend({ mode, memories }) {
 }
 
 // ── Detail Panel ──
-function GraphDetail({ node, memories, onClose }) {
+function GraphDetail({ node, memories, onClose, t }) {
   if (!node) return null;
 
   if (node.kind === 'memory') {
@@ -179,7 +180,7 @@ function GraphDetail({ node, memories, onClose }) {
           {m.note && <div className="graph-detail-note">{m.note}</div>}
           {m.tags?.length > 0 && (
             <div className="memory-tags">
-              {m.tags.map(t => <span className="memory-tag" key={t}>{t}</span>)}
+              {m.tags.map(tg => <span className="memory-tag" key={tg}>{tg}</span>)}
             </div>
           )}
           <div className="memory-id">{m.memory_id}</div>
@@ -203,7 +204,7 @@ function GraphDetail({ node, memories, onClose }) {
         <button className="graph-detail-close" onClick={onClose}>x</button>
       </div>
       <div className="graph-detail-body">
-        <div className="graph-detail-hub-count">{related.length} ricordi</div>
+        <div className="graph-detail-hub-count">{related.length} {t('graph.detailMemories')}</div>
         {related.map(m => (
           <div className="graph-detail-mem-item" key={m.memory_id}>
             <span className="graph-detail-mem-dot" style={{ background: feelingColor(m.feeling) }} />
@@ -225,6 +226,7 @@ function GraphDetail({ node, memories, onClose }) {
 
 export default function Graph() {
   const { recallAll, recallByFeeling, listConcepts } = useMemoryDB();
+  const { t } = useI18n();
   const concepts = listConcepts();
 
   const [mode, setMode] = useState('concept');
@@ -310,9 +312,9 @@ export default function Graph() {
     simRef.current = simulation;
 
     // Link colors
-    const linkColor = t => t === 'concept' ? '#4d96ff44'
-      : t === 'feeling' ? '#ff6b9d44'
-        : t === 'tag' ? '#ffd93d44' : '#88888844';
+    const linkColor = lt => lt === 'concept' ? '#4d96ff44'
+      : lt === 'feeling' ? '#ff6b9d44'
+        : lt === 'tag' ? '#ffd93d44' : '#88888844';
 
     // Links
     const link = g.append('g').attr('class', 'graph-links')
@@ -382,7 +384,7 @@ export default function Graph() {
         html += `<br><span style="color:${d.color}">${d.feeling}</span>`;
         html += `<br><span style="opacity:.6">${preview}</span>`;
         if (d.tags?.length) {
-          html += `<br>${d.tags.map(t => `<span class="graph-tt-tag">${t}</span>`).join('')}`;
+          html += `<br>${d.tags.map(tg => `<span class="graph-tt-tag">${tg}</span>`).join('')}`;
         }
       } else {
         html += ` <span style="opacity:.5">(${d.kind})</span>`;
@@ -466,35 +468,31 @@ export default function Graph() {
   }, [mode, graphMemories]);
 
   const MODES = [
-    { key: 'concept', label: 'Concetto' },
-    { key: 'feeling', label: 'Sentimento' },
-    { key: 'tag', label: 'Tag' },
-    { key: 'all', label: 'Tutti' },
+    { key: 'concept', label: t('graph.modeConcept') },
+    { key: 'feeling', label: t('graph.modeFeeling') },
+    { key: 'tag', label: t('graph.modeTag') },
+    { key: 'all', label: t('graph.modeAll') },
   ];
 
   return (
     <div>
-      <SectionGuide title="Come funziona il Grafo?">
-        <p>
-          <strong>Memory Graph</strong> visualizza la rete dei tuoi ricordi come un grafo interattivo.
-          Ogni nodo rappresenta un ricordo, e i collegamenti mostrano le relazioni tra di essi.
-        </p>
+      <SectionGuide title={t('graph.guideTitle')}>
+        <p dangerouslySetInnerHTML={{ __html: t('graph.guideIntro') }} />
         <ol className="guide-steps">
-          <li>Scegli il tipo di collegamento: per <em>Concetto</em>, <em>Sentimento</em>, <em>Tag</em> o <em>Tutti</em></li>
-          <li>Filtra per sentimento o concetto specifico per concentrare l'analisi</li>
-          <li>I nodi grandi (hub) rappresentano concetti, sentimenti o tag condivisi</li>
-          <li>Trascina i nodi, usa la rotella del mouse per zoomare, clicca per i dettagli</li>
+          <li dangerouslySetInnerHTML={{ __html: t('graph.guideStep1') }} />
+          <li>{t('graph.guideStep2')}</li>
+          <li>{t('graph.guideStep3')}</li>
+          <li>{t('graph.guideStep4')}</li>
         </ol>
         <div className="guide-note">
-          I colori dei nodi riflettono il sentimento associato al ricordo.
-          Ricordi con lo stesso concetto, sentimento o tag vengono collegati tramite nodi hub.
+          {t('graph.guideNote')}
         </div>
       </SectionGuide>
 
       {/* Controls bar */}
       <div className="graph-controls">
         <div className="graph-filter-group">
-          <span className="graph-filter-label">Collega per</span>
+          <span className="graph-filter-label">{t('graph.connectBy')}</span>
           {MODES.map(m => (
             <button
               key={m.key}
@@ -506,24 +504,24 @@ export default function Graph() {
           ))}
         </div>
         <div className="graph-filter-group">
-          <span className="graph-filter-label">Sentimento</span>
+          <span className="graph-filter-label">{t('graph.filterFeeling')}</span>
           <select
             className="graph-select"
             value={feelingFilter}
             onChange={e => setFeelingFilter(e.target.value)}
           >
-            <option value="">Tutti</option>
+            <option value="">{t('graph.filterFeelingAll')}</option>
             {FEELINGS.map(f => (
               <option key={f} value={f}>{f}</option>
             ))}
           </select>
         </div>
         <div className="graph-filter-group">
-          <span className="graph-filter-label">Concetto</span>
+          <span className="graph-filter-label">{t('graph.filterConcept')}</span>
           <input
             type="text"
             className="graph-input"
-            placeholder="tutti i concetti"
+            placeholder={t('graph.filterConceptPlaceholder')}
             value={conceptFilter}
             onChange={e => setConceptFilter(e.target.value)}
             list="graph-concept-list"
@@ -535,7 +533,7 @@ export default function Graph() {
           </datalist>
         </div>
         <div className="graph-filter-group">
-          <span className="graph-filter-label">Max nodi</span>
+          <span className="graph-filter-label">{t('graph.maxNodes')}</span>
           <select
             className="graph-select"
             value={maxNodes}
@@ -549,14 +547,14 @@ export default function Graph() {
         </div>
         <button className="btn-primary graph-btn-load" onClick={handleLoad} disabled={loading}>
           {loading
-            ? <><span className="loading" /> Caricamento...</>
-            : <><span className="btn-icon">{'\u2B21'}</span> Carica grafo</>
+            ? <><span className="loading" /> {t('graph.btnLoading')}</>
+            : <><span className="btn-icon">{'\u2B21'}</span> {t('graph.btnLoad')}</>
           }
         </button>
       </div>
 
       {/* Legend */}
-      <GraphLegend mode={mode} memories={graphMemories} />
+      <GraphLegend mode={mode} memories={graphMemories} t={t} />
 
       {/* Canvas */}
       <div className="graph-wrap" ref={wrapRef}>
@@ -565,8 +563,8 @@ export default function Graph() {
             <span className="graph-empty-icon">{'\u2B21'}</span>
             <span>
               {graphMemories.length === 0 && !loading
-                ? 'Clicca "Carica grafo" per visualizzare la rete dei ricordi'
-                : 'Nessun ricordo corrisponde ai filtri selezionati'}
+                ? t('graph.emptyPrompt')
+                : t('graph.emptyNoMatch')}
             </span>
           </div>
         )}
@@ -583,6 +581,7 @@ export default function Graph() {
           node={selectedNode}
           memories={graphMemories}
           onClose={() => setSelectedNode(null)}
+          t={t}
         />
       </div>
     </div>

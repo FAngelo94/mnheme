@@ -4,9 +4,11 @@ import { useMemoryDB } from '../hooks/useMemoryDB';
 import MemoryList from '../components/MemoryList';
 import Search from '../components/Search';
 import SectionGuide from '../components/SectionGuide';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function MemoriesPage() {
   const { recallAll, recallByFeeling, recall, revision } = useMemoryDB();
+  const { t } = useI18n();
   const [filter, setFilter]       = useState({ feeling: '', concept: '', limit: 50, oldestFirst: false });
   const [memories, setMemories]   = useState(null);
   const [tab, setTab]             = useState('browse');
@@ -30,34 +32,25 @@ export default function MemoriesPage() {
   return (
     <div>
       <div className="view-header">
-        <h1>Memories</h1>
-        <p className="view-desc">Esplora, filtra e cerca nei ricordi.</p>
+        <h1>{t('memories.title')}</h1>
+        <p className="view-desc">{t('memories.desc')}</p>
       </div>
 
-      <SectionGuide title="Come esplorare i ricordi?">
+      <SectionGuide title={t('memories.guideTitle')}>
         <p>
-          Questa sezione ti permette di sfogliare e cercare in tutti i tuoi ricordi.
+          {t('memories.guideIntro')}
         </p>
-        <p>
-          <strong>Browse</strong> &mdash; Filtra i ricordi per concetto, sentimento o entrambi.
-          Puoi scegliere l'ordine (più recenti o più vecchi prima) e il numero massimo di risultati.
-        </p>
-        <p>
-          <strong>Search</strong> &mdash; Cerca parole specifiche nel contenuto dei ricordi
-          usando la ricerca full-text, oppure cerca per tag specifico.
-        </p>
-        <div className="guide-note">
-          Tutti i ricordi sono immutabili: una volta scritti, non possono essere modificati o cancellati.
-          Questo riflette il principio di MNHEME &mdash; la memoria si stratifica, non si sovrascrive.
-        </div>
+        <p dangerouslySetInnerHTML={{ __html: t('memories.guideBrowse') }} />
+        <p dangerouslySetInnerHTML={{ __html: t('memories.guideSearch') }} />
+        <div className="guide-note" dangerouslySetInnerHTML={{ __html: t('memories.guideNote') }} />
       </SectionGuide>
 
       <div className="tab-bar">
         <button className={`tab-btn ${tab === 'browse' ? 'active' : ''}`} onClick={() => setTab('browse')}>
-          Browse
+          {t('memories.tabBrowse')}
         </button>
         <button className={`tab-btn ${tab === 'search' ? 'active' : ''}`} onClick={() => setTab('search')}>
-          Search
+          {t('memories.tabSearch')}
         </button>
       </div>
 
@@ -65,28 +58,28 @@ export default function MemoriesPage() {
         <div>
           <div className="filter-bar">
             <div className="filter-group">
-              <label>CONCEPT</label>
+              <label>{t('memories.filterConcept')}</label>
               <input
                 type="text"
                 value={filter.concept}
                 onChange={e => setFilter(p => ({ ...p, concept: e.target.value }))}
-                placeholder="Tutti..."
+                placeholder={t('memories.filterConceptPlaceholder')}
               />
             </div>
             <div className="filter-group">
-              <label>FEELING</label>
+              <label>{t('memories.filterFeeling')}</label>
               <select
                 value={filter.feeling}
                 onChange={e => setFilter(p => ({ ...p, feeling: e.target.value }))}
               >
-                <option value="">Tutti</option>
+                <option value="">{t('memories.filterFeelingAll')}</option>
                 {FEELINGS.map(f => (
                   <option key={f} value={f}>{FEELING_LABELS[f]}</option>
                 ))}
               </select>
             </div>
             <div className="filter-group">
-              <label>LIMIT</label>
+              <label>{t('memories.filterLimit')}</label>
               <input
                 type="number"
                 value={filter.limit}
@@ -96,22 +89,22 @@ export default function MemoriesPage() {
               />
             </div>
             <div className="filter-group">
-              <label>ORDER</label>
+              <label>{t('memories.filterOrder')}</label>
               <select
                 value={filter.oldestFirst ? 'asc' : 'desc'}
                 onChange={e => setFilter(p => ({ ...p, oldestFirst: e.target.value === 'asc' }))}
               >
-                <option value="desc">Newest first</option>
-                <option value="asc">Oldest first</option>
+                <option value="desc">{t('memories.orderNewest')}</option>
+                <option value="asc">{t('memories.orderOldest')}</option>
               </select>
             </div>
-            <button className="btn-primary" onClick={handleBrowse}>Fetch</button>
+            <button className="btn-primary" onClick={handleBrowse}>{t('memories.btnFetch')}</button>
           </div>
 
           {memories !== null && (
             <div>
               <div style={{ marginBottom: 8, fontSize: 11, color: 'var(--muted)' }}>
-                {memories.length} risultati
+                {memories.length} {t('memories.results')}
               </div>
               <MemoryList memories={memories} />
             </div>

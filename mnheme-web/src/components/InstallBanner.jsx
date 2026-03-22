@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useI18n } from '../i18n/index.jsx';
 
 const DISMISS_KEY = 'mnheme-install-dismissed';
 const DISMISS_DAYS = 7;
@@ -14,6 +15,7 @@ function isDismissed() {
 export default function InstallBanner() {
   const [show, setShow] = useState(false);
   const deferredPrompt = useRef(null);
+  const { t } = useI18n();
 
   const handleBeforeInstall = useCallback((e) => {
     e.preventDefault();
@@ -62,20 +64,20 @@ export default function InstallBanner() {
         <div className="install-banner-text">
           <span className="install-banner-icon">&#x1f4d6;</span>
           <div>
-            <strong className="install-banner-title">Installa MNHEME</strong>
+            <strong className="install-banner-title">{t('install.title')}</strong>
             <p className="install-banner-desc">
-              Aggiungi il diario alla schermata Home per un accesso rapido, anche offline.
+              {t('install.desc')}
             </p>
           </div>
         </div>
         <div className="install-banner-actions">
           <button className="btn-primary install-banner-btn" onClick={handleInstall}>
-            Installa
+            {t('install.btn')}
           </button>
           <button
             className="install-banner-close"
             onClick={handleDismiss}
-            aria-label="Chiudi"
+            aria-label={t('install.close')}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <line x1="18" y1="6" x2="6" y2="18" />

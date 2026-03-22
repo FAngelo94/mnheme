@@ -3,49 +3,37 @@ import Timeline from '../components/Timeline';
 import Graph from '../components/Graph';
 import SectionGuide from '../components/SectionGuide';
 import { useState } from 'react';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function StatsPage() {
   const [tab, setTab] = useState('stats');
+  const { t } = useI18n();
 
   return (
     <div>
       <div className="view-header">
-        <h1>Stats, Timeline & Graph</h1>
-        <p className="view-desc">Statistiche del database, timeline emotiva e grafo delle connessioni.</p>
+        <h1>{t('statsPage.title')}</h1>
+        <p className="view-desc">{t('statsPage.desc')}</p>
       </div>
 
-      <SectionGuide title="Cosa trovo qui?">
-        <p>
-          <strong>Dashboard</strong> &mdash; Una panoramica del tuo diario: quanti ricordi hai,
-          quanti concetti e sentimenti diversi hai esplorato, e quanto spazio occupa il database.
-          Include la distribuzione emotiva (quali emozioni prevalgono) e la mappa dei concetti.
-        </p>
-        <p>
-          <strong>Timeline</strong> &mdash; Scegli un concetto e visualizza come le tue emozioni
-          a riguardo si sono evolute nel tempo, in ordine cronologico. Ogni punto della timeline
-          mostra il sentimento, la data e le note associate.
-        </p>
-        <p>
-          <strong>Graph</strong> &mdash; Una visualizzazione interattiva a rete dei tuoi ricordi.
-          I nodi rappresentano ricordi individuali, collegati da concetti, sentimenti o tag condivisi.
-          Puoi trascinare, zoomare e cliccare per esplorare le connessioni.
-        </p>
+      <SectionGuide title={t('statsPage.guideTitle')}>
+        <p dangerouslySetInnerHTML={{ __html: t('statsPage.guideDashboard') }} />
+        <p dangerouslySetInnerHTML={{ __html: t('statsPage.guideTimeline') }} />
+        <p dangerouslySetInnerHTML={{ __html: t('statsPage.guideGraph') }} />
         <div className="guide-note">
-          La timeline è particolarmente utile prima di usare Reflect: ti dà un colpo d'occhio
-          visivo sull'evoluzione emotiva, mentre Reflect ne fa un'analisi profonda con l'IA.
-          Il grafo mostra le relazioni strutturali tra i ricordi.
+          {t('statsPage.guideNote')}
         </div>
       </SectionGuide>
 
       <div className="tab-bar">
         <button className={`tab-btn ${tab === 'stats' ? 'active' : ''}`} onClick={() => setTab('stats')}>
-          Dashboard
+          {t('statsPage.tabDashboard')}
         </button>
         <button className={`tab-btn ${tab === 'timeline' ? 'active' : ''}`} onClick={() => setTab('timeline')}>
-          Timeline
+          {t('statsPage.tabTimeline')}
         </button>
         <button className={`tab-btn ${tab === 'graph' ? 'active' : ''}`} onClick={() => setTab('graph')}>
-          Graph
+          {t('statsPage.tabGraph')}
         </button>
       </div>
 

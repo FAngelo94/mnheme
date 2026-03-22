@@ -5,10 +5,12 @@ import Remember from '../components/Remember';
 import Summarize from '../components/Summarize';
 import SectionGuide from '../components/SectionGuide';
 import { useBrain } from '../hooks/useBrain';
+import { useI18n } from '../i18n/index.jsx';
 
 function DreamPanel() {
   const { dream, loading, error } = useBrain();
   const [result, setResult] = useState(null);
+  const { t } = useI18n();
 
   const handleDream = async () => {
     try {
@@ -21,45 +23,40 @@ function DreamPanel() {
 
   return (
     <div>
-      <SectionGuide title="Come funziona Dream?">
-        <p>
-          <strong>Dream</strong> simula il processo onirico: prende ricordi apparentemente
-          non collegati tra loro e cerca connessioni nascoste e sorprendenti.
-        </p>
+      <SectionGuide title={t('dream.guideTitle')}>
+        <p dangerouslySetInnerHTML={{ __html: t('dream.guideIntro') }} />
         <ol className="guide-steps">
-          <li>Il sistema campiona 8 ricordi da emozioni diverse, garantendo varietà emotiva</li>
-          <li>I ricordi vengono mescolati casualmente, come in un sogno</li>
-          <li>L'IA cerca il filo nascosto che li unisce: temi latenti, metafore, connessioni inattese</li>
-          <li>Il risultato è un'analisi onirica &mdash; suggestiva, non banale</li>
+          <li>{t('dream.guideStep1')}</li>
+          <li>{t('dream.guideStep2')}</li>
+          <li>{t('dream.guideStep3')}</li>
+          <li dangerouslySetInnerHTML={{ __html: t('dream.guideStep4') }} />
         </ol>
         <div className="guide-note">
-          Ogni volta che premi Dream ottieni risultati diversi, perché il campionamento è casuale.
-          Servono almeno 2 ricordi nel diario per sognare.
+          {t('dream.guideNote')}
         </div>
       </SectionGuide>
 
       <div className="form-card">
         <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 16 }}>
-          Il cervello prende ricordi distanti e cerca connessioni inattese.
-          Simula il processo onirico di consolidamento della memoria.
+          {t('dream.desc')}
         </p>
         <div className="form-actions">
           <button className="btn-primary" onClick={handleDream} disabled={loading}>
-            {loading ? <><span className="loading" /> Dreaming...</> : '~ Dream'}
+            {loading ? <><span className="loading" /> {t('dream.btnLoading')}</> : t('dream.btn')}
           </button>
         </div>
       </div>
 
       {error && (
         <div className="response-area visible error" style={{ marginTop: 12 }}>
-          <div className="response-label">Errore</div>
+          <div className="response-label">{t('dream.error')}</div>
           {error}
         </div>
       )}
 
       {result && (
         <div className="response-area visible" style={{ marginTop: 12 }}>
-          <div className="response-label">Connessioni Oniriche</div>
+          <div className="response-label">{t('dream.resultLabel')}</div>
           <div style={{ whiteSpace: 'pre-wrap' }}>{result.connections}</div>
         </div>
       )}
@@ -70,6 +67,7 @@ function DreamPanel() {
 function IntrospectPanel() {
   const { introspect, loading, error } = useBrain();
   const [result, setResult] = useState(null);
+  const { t } = useI18n();
 
   const handleIntrospect = async () => {
     try {
@@ -82,52 +80,47 @@ function IntrospectPanel() {
 
   return (
     <div>
-      <SectionGuide title="Come funziona Introspect?">
-        <p>
-          <strong>Introspect</strong> analizza tutti i tuoi ricordi e produce un ritratto
-          psicologico completo: chi sei, come elabori le emozioni, quali pattern ricorrono.
-        </p>
+      <SectionGuide title={t('introspect.guideTitle')}>
+        <p dangerouslySetInnerHTML={{ __html: t('introspect.guideIntro') }} />
         <ol className="guide-steps">
-          <li>Il sistema raccoglie statistiche su concetti e distribuzione emotiva</li>
-          <li>Campiona i ricordi più recenti come contesto</li>
-          <li>L'IA produce un ritratto della persona, identifica pattern, tensioni irrisolte e risorse</li>
+          <li>{t('introspect.guideStep1')}</li>
+          <li>{t('introspect.guideStep2')}</li>
+          <li>{t('introspect.guideStep3')}</li>
         </ol>
         <div className="guide-note">
-          Servono ricordi nel diario per poter fare introspezione.
-          Il ritratto diventa più accurato con più ricordi.
+          {t('introspect.guideNote')}
         </div>
       </SectionGuide>
 
       <div className="form-card">
         <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 16 }}>
-          Analisi psicologica completa basata su tutti i tuoi ricordi.
-          Identifica pattern cognitivi, tensioni irrisolte e risorse emotive.
+          {t('introspect.desc')}
         </p>
         <div className="form-actions">
           <button className="btn-primary" onClick={handleIntrospect} disabled={loading}>
-            {loading ? <><span className="loading" /> Analyzing...</> : '@ Introspect'}
+            {loading ? <><span className="loading" /> {t('introspect.btnLoading')}</> : t('introspect.btn')}
           </button>
         </div>
       </div>
 
       {error && (
         <div className="response-area visible error" style={{ marginTop: 12 }}>
-          <div className="response-label">Errore</div>
+          <div className="response-label">{t('introspect.error')}</div>
           {error}
         </div>
       )}
 
       {result && (
         <div className="response-area visible" style={{ marginTop: 12 }}>
-          <div className="response-label">Ritratto Psicologico</div>
+          <div className="response-label">{t('introspect.resultLabel')}</div>
           <div style={{ whiteSpace: 'pre-wrap' }}>{result.portrait}</div>
           {result.dominantConcepts.length > 0 && (
             <div style={{ marginTop: 12, fontSize: 12, color: 'var(--muted)' }}>
-              <strong>Concetti dominanti:</strong> {result.dominantConcepts.join(', ')}
+              <strong>{t('introspect.dominantConcepts')}</strong> {result.dominantConcepts.join(', ')}
             </div>
           )}
           <div style={{ marginTop: 4, fontSize: 12, color: 'var(--muted)' }}>
-            Basato su {result.totalMemories} ricordi
+            {t('introspect.basedOn')} {result.totalMemories} {t('introspect.memoriesCount')}
           </div>
         </div>
       )}
@@ -137,34 +130,35 @@ function IntrospectPanel() {
 
 export default function BrainPage() {
   const [tab, setTab] = useState('ask');
+  const { t } = useI18n();
 
   return (
     <div>
       <div className="view-header">
-        <h1>Brain</h1>
+        <h1>{t('brain.title')}</h1>
         <p className="view-desc">
-          Il cervello cognitivo di MNHEME: interroga, rifletti, ricorda manualmente, sogna, analizza.
+          {t('brain.desc')}
         </p>
       </div>
 
       <div className="tab-bar">
         <button className={`tab-btn ${tab === 'ask' ? 'active' : ''}`} onClick={() => setTab('ask')}>
-          Ask (RAG)
+          {t('brain.tabAsk')}
         </button>
         <button className={`tab-btn ${tab === 'reflect' ? 'active' : ''}`} onClick={() => setTab('reflect')}>
-          Reflect
+          {t('brain.tabReflect')}
         </button>
         <button className={`tab-btn ${tab === 'remember' ? 'active' : ''}`} onClick={() => setTab('remember')}>
-          Remember
+          {t('brain.tabRemember')}
         </button>
         <button className={`tab-btn ${tab === 'dream' ? 'active' : ''}`} onClick={() => setTab('dream')}>
-          Dream
+          {t('brain.tabDream')}
         </button>
         <button className={`tab-btn ${tab === 'introspect' ? 'active' : ''}`} onClick={() => setTab('introspect')}>
-          Introspect
+          {t('brain.tabIntrospect')}
         </button>
         <button className={`tab-btn ${tab === 'summarize' ? 'active' : ''}`} onClick={() => setTab('summarize')}>
-          Summarize
+          {t('brain.tabSummarize')}
         </button>
       </div>
 

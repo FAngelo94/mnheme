@@ -1,0 +1,411 @@
+/**
+ * MNHEME — English translations
+ */
+const en = {
+  // ── Layout / Header ──
+  layout: {
+    openMenu: 'Open menu',
+    subtitle: 'Memory Journal',
+  },
+
+  // ── Sidebar ──
+  sidebar: {
+    subtitle: 'Memory Journal',
+    groupMemory: 'Memory',
+    groupExplore: 'Explore',
+    groupSystem: 'System',
+    navPerceive: 'Perceive',
+    navMemories: 'Memories',
+    navBrain: 'Brain',
+    navStats: 'Stats',
+    navSettings: 'Settings',
+    memories: 'memories',
+    concepts: 'concepts',
+  },
+
+  // ── HomePage / Perceive ──
+  perceive: {
+    title: 'Perceive',
+    desc: 'Write freely. The MNHEME brain analyzes, catalogs, and enriches the memory.',
+    guideTitle: 'How does Perceive work?',
+    guideIntro: '<strong>Perceive</strong> transforms your raw thoughts into structured memories. It is the only function that <em>writes</em> to your journal.',
+    guideStep1: 'Write freely about what you are experiencing, thinking, or feeling',
+    guideStep2: 'The AI analyzes the text and extracts a <strong>key concept</strong> (e.g., "Family", "Work"), a <strong>feeling</strong>, and thematic <strong>tags</strong>',
+    guideStep3: 'The text is rewritten with greater psychological depth',
+    guideStep4: 'The memory is saved permanently and immutably &mdash; it can never be edited or deleted',
+    guideNote: 'The 15 recognized feelings are: joy, sadness, anger, fear, nostalgia, love, melancholy, serenity, surprise, anxiety, gratitude, shame, pride, boredom, curiosity.',
+    fieldLabel: 'WHAT ARE YOU EXPERIENCING?',
+    placeholder: 'Write freely — a thought, an emotion, a memory...',
+    chars: 'chars',
+    btnLoading: 'Perceiving...',
+    btn: '> Perceive',
+    error: 'Error',
+    resultLabel: 'Memory Created',
+    resultConcept: 'Concept',
+    resultFeeling: 'Feeling',
+    recentTitle: 'RECENT MEMORIES',
+  },
+
+  // ── MemoriesPage ──
+  memories: {
+    title: 'Memories',
+    desc: 'Explore, filter, and search through your memories.',
+    guideTitle: 'How to explore memories?',
+    guideIntro: 'This section lets you browse and search through all your memories.',
+    guideBrowse: '<strong>Browse</strong> &mdash; Filter memories by concept, feeling, or both. You can choose the order (newest or oldest first) and the maximum number of results.',
+    guideSearch: '<strong>Search</strong> &mdash; Search for specific words in memory content using full-text search, or look up memories by a specific tag.',
+    guideNote: 'All memories are immutable: once written, they cannot be edited or deleted. This reflects the principle of MNHEME &mdash; memory layers up, it does not overwrite.',
+    tabBrowse: 'Browse',
+    tabSearch: 'Search',
+    filterConcept: 'CONCEPT',
+    filterConceptPlaceholder: 'All...',
+    filterFeeling: 'FEELING',
+    filterFeelingAll: 'All',
+    filterLimit: 'LIMIT',
+    filterOrder: 'ORDER',
+    orderNewest: 'Newest first',
+    orderOldest: 'Oldest first',
+    btnFetch: 'Fetch',
+    results: 'results',
+  },
+
+  // ── BrainPage ──
+  brain: {
+    title: 'Brain',
+    desc: 'The cognitive brain of MNHEME: ask, reflect, manually remember, dream, analyze.',
+    tabAsk: 'Ask (RAG)',
+    tabReflect: 'Reflect',
+    tabRemember: 'Remember',
+    tabDream: 'Dream',
+    tabIntrospect: 'Introspect',
+    tabSummarize: 'Summarize',
+  },
+
+  // ── Ask ──
+  ask: {
+    guideTitle: 'How does Ask work?',
+    guideIntro: '<strong>Ask</strong> answers your questions by searching through your memories. It works like an intelligent search engine over your personal memory.',
+    guideStep1: 'Type a question (e.g., <em>"How do I feel about money?"</em>)',
+    guideStep2: 'The AI extracts keywords and concepts from the question',
+    guideStep3: 'It searches for the most relevant memories in your journal (up to 15)',
+    guideStep4: 'It generates an answer based <strong>exclusively</strong> on your real memories',
+    guideNote: 'Every answer includes a confidence level (high, medium, low) and the list of memories used as sources. Ask never makes things up: if you have no memories on a topic, it will tell you.',
+    fieldLabel: 'QUESTION (RAG)',
+    placeholder: 'How do I feel about money? Is there something unresolved with my family?',
+    btnLoading: 'Thinking...',
+    btn: '? Ask',
+    error: 'Error',
+    resultLabel: 'Answer',
+    confidence: 'Confidence',
+    memoriesUsed: 'Memories used',
+  },
+
+  // ── Reflect ──
+  reflect: {
+    guideTitle: 'How does Reflect work?',
+    guideIntro: '<strong>Reflect</strong> analyzes how your emotions toward a concept have evolved over time. It is your personal introspection engine.',
+    guideStep1: 'Choose a concept from your journal (e.g., <em>"Family"</em>, <em>"Work"</em>)',
+    guideStep2: 'The system retrieves all memories tied to that concept, from oldest to newest',
+    guideStep3: 'It reconstructs the emotional sequence over time (e.g., anger &rarr; sadness &rarr; serenity)',
+    guideStep4: 'The AI analyzes recurring patterns, what remains unresolved, and the psychological meaning of the journey',
+    guideNote: 'The result includes an "emotional arc" &mdash; a brief summary of how your relationship with that concept has changed. Reflect does not modify anything: it is read-only analysis.',
+    fieldLabel: 'CONCEPT TO ANALYZE',
+    placeholder: 'Debt, Family, Work...',
+    btnLoading: 'Reflecting...',
+    btn: '~ Reflect',
+    error: 'Error',
+    resultLabel: 'Reflection on',
+    emotionalArc: 'Emotional arc',
+  },
+
+  // ── Remember ──
+  remember: {
+    guideTitle: 'How does Remember work?',
+    guideIntro: '<strong>Remember</strong> lets you create a memory manually, without AI assistance. You choose every detail.',
+    guideStep1: 'Choose a <strong>concept</strong> (e.g., "Family", "Travel") &mdash; it is the memory\'s category',
+    guideStep2: 'Select the <strong>feeling</strong> that best describes how you feel',
+    guideStep3: 'Write the <strong>content</strong> of the memory',
+    guideStep4: 'Optionally, add a context note and tags to organize it',
+    guideNote: 'Unlike Perceive, there is no AI enrichment here. The memory is saved exactly as you write it. Useful when you want full control.',
+    conceptLabel: 'CONCEPT',
+    conceptPlaceholder: 'Debt, Family, Work...',
+    feelingLabel: 'FEELING',
+    feelingSelect: '-- select --',
+    contentLabel: 'CONTENT',
+    contentPlaceholder: 'Write the memory...',
+    chars: 'chars',
+    noteLabel: 'NOTE',
+    noteOptional: 'optional',
+    notePlaceholder: 'Context, annotations...',
+    tagsLabel: 'TAGS',
+    tagsOptional: 'comma separated',
+    tagsPlaceholder: 'home, 2024, urgent...',
+    btnLoading: 'Saving...',
+    btn: '* Remember',
+    btnClear: 'Clear',
+    error: 'Error',
+    validationError: 'Concept, feeling, and content are required.',
+    resultLabel: 'Memory Saved',
+    required: '*',
+  },
+
+  // ── Dream (BrainPage panel) ──
+  dream: {
+    guideTitle: 'How does Dream work?',
+    guideIntro: '<strong>Dream</strong> simulates the dream process: it takes seemingly unrelated memories and searches for hidden, surprising connections.',
+    guideStep1: 'The system samples 8 memories from different emotions, ensuring emotional variety',
+    guideStep2: 'The memories are shuffled randomly, as in a dream',
+    guideStep3: 'The AI looks for the hidden thread connecting them: latent themes, metaphors, unexpected connections',
+    guideStep4: 'The result is a dream-like analysis &mdash; evocative, never trivial',
+    guideNote: 'Each time you press Dream you get different results, because the sampling is random. You need at least 2 memories in your journal to dream.',
+    desc: 'The brain takes distant memories and looks for unexpected connections. It simulates the dream-like process of memory consolidation.',
+    btnLoading: 'Dreaming...',
+    btn: '~ Dream',
+    error: 'Error',
+    resultLabel: 'Dream Connections',
+  },
+
+  // ── Introspect (BrainPage panel) ──
+  introspect: {
+    guideTitle: 'How does Introspect work?',
+    guideIntro: '<strong>Introspect</strong> analyzes all your memories and produces a complete psychological portrait: who you are, how you process emotions, which patterns recur.',
+    guideStep1: 'The system gathers statistics on concepts and emotional distribution',
+    guideStep2: 'It samples the most recent memories as context',
+    guideStep3: 'The AI produces a portrait of the person, identifying patterns, unresolved tensions, and resources',
+    guideNote: 'You need memories in your journal for introspection to work. The portrait becomes more accurate with more memories.',
+    desc: 'Complete psychological analysis based on all your memories. Identifies cognitive patterns, unresolved tensions, and emotional resources.',
+    btnLoading: 'Analyzing...',
+    btn: '@ Introspect',
+    error: 'Error',
+    resultLabel: 'Psychological Portrait',
+    dominantConcepts: 'Dominant concepts:',
+    basedOn: 'Based on',
+    memoriesCount: 'memories',
+  },
+
+  // ── Summarize ──
+  summarize: {
+    guideTitle: 'How does Summarize work?',
+    guideIntro: '<strong>Summarize</strong> takes a group of memories and condenses them in one of three available styles, preserving emotional complexity without oversimplifying.',
+    guideStep1: 'Optionally choose a concept and/or a feeling to filter memories',
+    guideStep2: 'Select the style: <em>Narrative</em> (first-person account), <em>Analytical</em> (pattern analysis), or <em>Poetic</em> (evocative prose)',
+    guideStep3: 'The AI processes all selected memories and produces a coherent summary',
+    guideNote: 'Without filters, the system uses the most recent memories (up to the set limit). You can combine concept and feeling for a very specific summary.',
+    conceptLabel: 'CONCEPT',
+    conceptOptional: 'optional',
+    conceptPlaceholder: 'all concepts',
+    feelingLabel: 'FEELING',
+    feelingOptional: 'optional',
+    feelingAll: 'All',
+    styleLabel: 'STYLE',
+    styleNarrative: 'Narrative',
+    styleNarrativeDesc: 'First person, fluid, continuous.',
+    styleAnalytical: 'Analytical',
+    styleAnalyticalDesc: 'Patterns, causes, themes. Objective tone.',
+    stylePoetic: 'Poetic',
+    stylePoeticDesc: 'Poetic prose. Imagery, rhythm, emotion.',
+    maxMemories: 'MAX MEMORIES',
+    btnLoading: 'Summarizing...',
+    btn: 'Summarize',
+    error: 'Error',
+    resultLabel: 'Summary',
+    resultConcept: 'Concept',
+    resultFeeling: 'Feeling',
+    memoriesUsed: 'memories used',
+  },
+
+  // ── StatsPage ──
+  statsPage: {
+    title: 'Stats, Timeline & Graph',
+    desc: 'Database statistics, emotional timeline, and connection graph.',
+    guideTitle: 'What can I find here?',
+    guideDashboard: '<strong>Dashboard</strong> &mdash; An overview of your journal: how many memories you have, how many distinct concepts and feelings you have explored, and how much space the database takes. Includes emotional distribution (which emotions prevail) and the concept map.',
+    guideTimeline: '<strong>Timeline</strong> &mdash; Choose a concept and see how your emotions about it have evolved over time, in chronological order. Each point on the timeline shows the feeling, date, and associated notes.',
+    guideGraph: '<strong>Graph</strong> &mdash; An interactive network visualization of your memories. Nodes represent individual memories, connected by shared concepts, feelings, or tags. You can drag, zoom, and click to explore the connections.',
+    guideNote: 'The timeline is especially useful before using Reflect: it gives you a visual glance at emotional evolution, while Reflect provides a deep AI analysis. The graph shows the structural relationships between memories.',
+    tabDashboard: 'Dashboard',
+    tabTimeline: 'Timeline',
+    tabGraph: 'Graph',
+  },
+
+  // ── Stats component ──
+  stats: {
+    totalMemories: 'TOTAL MEMORIES',
+    concepts: 'CONCEPTS',
+    feelingsUsed: 'FEELINGS USED',
+    ofTotal: 'of',
+    total: 'total',
+    storage: 'STORAGE',
+    emotionalDistribution: 'EMOTIONAL DISTRIBUTION',
+    conceptsSection: 'CONCEPTS',
+    memorySingular: 'memory',
+    memoryPlural: 'memories',
+    feelingsConceptsSection: 'FEELINGS - ASSOCIATED CONCEPTS',
+  },
+
+  // ── Timeline ──
+  timeline: {
+    conceptLabel: 'CONCEPT',
+    conceptPlaceholder: 'Debt, Family, Work...',
+    btnLoad: 'Load timeline',
+    noData: 'No data for',
+    entriesFor: 'entries for',
+  },
+
+  // ── Graph ──
+  graph: {
+    guideTitle: 'How does the Graph work?',
+    guideIntro: '<strong>Memory Graph</strong> visualizes the network of your memories as an interactive graph. Each node represents a memory, and the links show the relationships between them.',
+    guideStep1: 'Choose the link type: by <em>Concept</em>, <em>Feeling</em>, <em>Tag</em>, or <em>All</em>',
+    guideStep2: 'Filter by specific feeling or concept to focus the analysis',
+    guideStep3: 'Large nodes (hubs) represent shared concepts, feelings, or tags',
+    guideStep4: 'Drag nodes, use the mouse wheel to zoom, click for details',
+    guideNote: 'Node colors reflect the feeling associated with the memory. Memories with the same concept, feeling, or tag are connected through hub nodes.',
+    connectBy: 'Connect by',
+    modeConcept: 'Concept',
+    modeFeeling: 'Feeling',
+    modeTag: 'Tag',
+    modeAll: 'All',
+    filterFeeling: 'Feeling',
+    filterFeelingAll: 'All',
+    filterConcept: 'Concept',
+    filterConceptPlaceholder: 'all concepts',
+    maxNodes: 'Max nodes',
+    btnLoading: 'Loading...',
+    btnLoad: 'Load graph',
+    emptyPrompt: 'Click "Load graph" to visualize the memory network',
+    emptyNoMatch: 'No memories match the selected filters',
+    legendConceptHub: 'Concept hub',
+    legendFeelingHub: 'Feeling hub',
+    legendTagHub: 'Tag hub',
+    detailMemories: 'memories',
+  },
+
+  // ── Search ──
+  search: {
+    placeholder: 'Search in memories...',
+    btn: 'Search',
+    tagLabel: 'By tag:',
+    tagPlaceholder: 'home, work, urgent...',
+    tagBtn: 'Tag search',
+    resultsFor: 'results for',
+    memoriesWithTag: 'memories with tag',
+  },
+
+  // ── MemoryList ──
+  memoryList: {
+    empty: 'No memories found.',
+  },
+
+  // ── SettingsPage ──
+  settingsPage: {
+    title: 'Settings',
+    desc: 'Customize your journal and configure integrations.',
+    guideTitle: 'Settings guide',
+    guideAppearance: '<strong>Appearance</strong> &mdash; Choose the visual theme for your journal from 5 different styles. Your choice is saved automatically.',
+    guideLLM: '<strong>LLM Provider</strong> &mdash; Configure the AI model that powers Perceive, Ask, Reflect, and Dream. You can use free local providers (LM Studio, Ollama) or cloud services. Select a preset or manually enter the URL, model, and API key.',
+    guideExport: '<strong>Export / Import</strong> &mdash; Export all your memories as a JSON file for backup or migration. You can re-import them at any time; duplicates are automatically ignored.',
+    guideNote: 'Without a configured LLM, you can still use Remember (manual save), Browse, Search, and Stats. Cognitive functions (Perceive, Ask, Reflect, Dream) require an active LLM provider.',
+    tabAppearance: 'Appearance',
+    tabProvider: 'LLM Provider',
+    tabData: 'Export / Import',
+    tabLanguage: 'Language',
+  },
+
+  // ── Settings (LLM Provider) ──
+  settings: {
+    guideTitle: 'Which LLM providers are free?',
+    guideIntro: 'MNHEME works with any LLM provider. Here are the best <strong>free</strong> options, organized by category.',
+    guideFreeLocal: 'Free & local (no limits)',
+    guideFreeCloud: 'Free cloud tier (no expiry)',
+    guideCredits: 'Signup credits (they run out)',
+    guideTip: '<strong>Tip:</strong> to start for free, use LM Studio or Ollama locally. As a cloud fallback, Google AI Studio and Groq are the best choices. Select a preset from the menu below to auto-configure the URL.',
+    lmStudioDesc: 'Desktop GUI, GGUF models from HuggingFace. No API key needed. Limit = your hardware only.',
+    ollamaDesc: 'CLI, supports Llama, Mistral, DeepSeek, Qwen, Gemma, and more. No API key. Limit = your hardware only.',
+    googleDesc: 'The most generous free tier. Gemini 2.5 Pro: 5 RPM, 100 requests/day. Flash: 10 RPM, 250/day. 1M token context.',
+    mistralDesc: '"Experiment" plan: 1 billion tokens/month. All models included, even Codestral. Phone verification only.',
+    groqDesc: '~30 RPM. LLaMA 3.3 70B: ~500K tokens/day. Exceptional speed: dedicated inference hardware.',
+    cerebrasDesc: '1M tokens/day. Ultra-fast inference at 2600+ tokens/sec. Context up to 64K.',
+    openrouterDesc: '~27 free models (IDs with :free suffix). 20 RPM, 50 requests/day on free models.',
+    togetherDesc: 'Up to $100 in signup credits. Wide selection of open-source models.',
+    anthropicDesc: '$5 at signup. Claude Haiku, Sonnet, Opus. Students: up to $300.',
+    sambanovaDesc: '$5 credits (~30M tokens on Llama 8B). Expires: 30 days.',
+    fireworksDesc: '$1 in initial credits. Models starting from $0.20/M tokens.',
+    tagFree: 'Free',
+    tagCredits100: '$100 credits',
+    tagCredits5: '$5 credits',
+    tagCredits5_30: '$5 / 30d',
+    tagCredits1: '$1 credits',
+    presetLabel: 'PROVIDER PRESET',
+    presetPlaceholder: '-- Choose a preset --',
+    urlLabel: 'ENDPOINT URL',
+    modelLabel: 'MODEL',
+    apiKeyLabel: 'API KEY',
+    apiKeyOptional: 'optional for local providers',
+    temperatureLabel: 'TEMPERATURE',
+    maxTokensLabel: 'MAX TOKENS',
+    btnTesting: 'Testing...',
+    btnTest: '@ Test Connection',
+    testSuccess: 'Connection successful',
+    testFail: 'Connection failed',
+    testReply: 'The provider replied:',
+    configTitle: 'CONFIGURATION STATUS',
+    configProvider: 'Provider',
+    configUrl: 'URL',
+    configModel: 'Model',
+    configApiKey: 'API Key',
+  },
+
+  // ── ThemeSelector ──
+  theme: {
+    title: 'Appearance',
+    desc: 'Choose a visual theme for your journal. The selected theme is saved automatically and applied on every visit.',
+  },
+
+  // ── ExportImport ──
+  exportImport: {
+    exportTitle: 'EXPORT',
+    exportDesc: 'Download all memories as a JSON file. Useful for backup or migration.',
+    exportBtn: 'Export JSON',
+    exportSuccess: 'Exported {count} memories.',
+    importTitle: 'IMPORT',
+    importDesc: 'Import memories from an exported JSON file. Duplicates (same memory_id) are ignored.',
+    importFileLabel: 'JSON FILE',
+    importLoading: 'Importing...',
+    importSuccess: 'Imported {count} new memories.',
+    importError: 'Import error: {error}',
+    completed: 'Completed',
+    errorLabel: 'Error',
+  },
+
+  // ── SectionGuide ──
+  sectionGuide: {
+    hideGuide: 'Hide guide',
+    defaultTitle: 'How does this work?',
+  },
+
+  // ── InstallBanner ──
+  install: {
+    title: 'Install MNHEME',
+    desc: 'Add the journal to your Home screen for quick access, even offline.',
+    btn: 'Install',
+    close: 'Close',
+  },
+
+  // ── Language selector ──
+  language: {
+    title: 'LANGUAGE',
+    desc: 'Choose the interface language. Memories and AI-generated content are not translated.',
+    italian: 'Italiano',
+    english: 'English',
+  },
+
+  // ── Common ──
+  common: {
+    error: 'Error',
+    required: '*',
+    optional: 'optional',
+  },
+};
+
+export default en;

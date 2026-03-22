@@ -1,57 +1,50 @@
 import Settings from '../components/Settings';
 import ExportImport from '../components/ExportImport';
 import ThemeSelector from '../components/ThemeSelector';
+import LanguageSelector from '../components/LanguageSelector';
 import SectionGuide from '../components/SectionGuide';
 import { useState } from 'react';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function SettingsPage() {
   const [tab, setTab] = useState('appearance');
+  const { t } = useI18n();
 
   return (
     <div>
       <div className="view-header">
-        <h1>Settings</h1>
-        <p className="view-desc">Personalizza il tuo diario e configura le integrazioni.</p>
+        <h1>{t('settingsPage.title')}</h1>
+        <p className="view-desc">{t('settingsPage.desc')}</p>
       </div>
 
-      <SectionGuide title="Guida alle impostazioni">
-        <p>
-          <strong>Appearance</strong> &mdash; Scegli il tema visivo del tuo diario tra 5 stili diversi.
-          La scelta viene salvata automaticamente.
-        </p>
-        <p>
-          <strong>LLM Provider</strong> &mdash; Configura il modello di intelligenza artificiale
-          che alimenta Perceive, Ask, Reflect e Dream. Puoi usare provider locali gratuiti
-          (LM Studio, Ollama) o servizi cloud. Seleziona un preset oppure inserisci manualmente
-          URL, modello e chiave API.
-        </p>
-        <p>
-          <strong>Export / Import</strong> &mdash; Esporta tutti i tuoi ricordi come file JSON
-          per backup o migrazione. Puoi reimportarli in qualsiasi momento; i duplicati vengono
-          ignorati automaticamente.
-        </p>
+      <SectionGuide title={t('settingsPage.guideTitle')}>
+        <p dangerouslySetInnerHTML={{ __html: t('settingsPage.guideAppearance') }} />
+        <p dangerouslySetInnerHTML={{ __html: t('settingsPage.guideLLM') }} />
+        <p dangerouslySetInnerHTML={{ __html: t('settingsPage.guideExport') }} />
         <div className="guide-note">
-          Senza un LLM configurato, potrai comunque usare Remember (salvataggio manuale),
-          Browse, Search e Stats. Le funzioni cognitive (Perceive, Ask, Reflect, Dream)
-          richiedono un provider LLM attivo.
+          {t('settingsPage.guideNote')}
         </div>
       </SectionGuide>
 
       <div className="tab-bar">
         <button className={`tab-btn ${tab === 'appearance' ? 'active' : ''}`} onClick={() => setTab('appearance')}>
-          Appearance
+          {t('settingsPage.tabAppearance')}
         </button>
         <button className={`tab-btn ${tab === 'provider' ? 'active' : ''}`} onClick={() => setTab('provider')}>
-          LLM Provider
+          {t('settingsPage.tabProvider')}
         </button>
         <button className={`tab-btn ${tab === 'data' ? 'active' : ''}`} onClick={() => setTab('data')}>
-          Export / Import
+          {t('settingsPage.tabData')}
+        </button>
+        <button className={`tab-btn ${tab === 'language' ? 'active' : ''}`} onClick={() => setTab('language')}>
+          {t('settingsPage.tabLanguage')}
         </button>
       </div>
 
       {tab === 'appearance' && <ThemeSelector />}
       {tab === 'provider'   && <Settings />}
       {tab === 'data'       && <ExportImport />}
+      {tab === 'language'   && <LanguageSelector />}
     </div>
   );
 }

@@ -3,9 +3,11 @@ import { FEELINGS, FEELING_LABELS } from '../core/constants';
 import { useMemoryDB } from '../hooks/useMemoryDB';
 import MemoryCard from './MemoryCard';
 import SectionGuide from './SectionGuide';
+import { useI18n } from '../i18n/index.jsx';
 
 export default function Remember() {
   const { remember, refresh } = useMemoryDB();
+  const { t } = useI18n();
   const [form, setForm] = useState({
     concept: '', feeling: '', content: '', note: '', tags: '',
   });
@@ -20,13 +22,13 @@ export default function Remember() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.concept.trim() || !form.feeling || !form.content.trim()) {
-      setError('Concept, feeling e content sono obbligatori.');
+      setError(t('remember.validationError'));
       return;
     }
     setLoading(true);
     setError(null);
     try {
-      const tags = form.tags.split(',').map(t => t.trim()).filter(Boolean);
+      const tags = form.tags.split(',').map(tg => tg.trim()).filter(Boolean);
       const mem = await remember(form.concept, form.feeling, form.content, {
         note: form.note, tags,
       });
@@ -46,42 +48,38 @@ export default function Remember() {
     setResult(null);
   };
 
-  const tagList = form.tags.split(',').map(t => t.trim()).filter(Boolean);
+  const tagList = form.tags.split(',').map(tg => tg.trim()).filter(Boolean);
 
   return (
     <div>
-      <SectionGuide title="Come funziona Remember?">
-        <p>
-          <strong>Remember</strong> ti permette di creare un ricordo manualmente,
-          senza l'aiuto dell'IA. Sei tu a scegliere ogni dettaglio.
-        </p>
+      <SectionGuide title={t('remember.guideTitle')}>
+        <p dangerouslySetInnerHTML={{ __html: t('remember.guideIntro') }} />
         <ol className="guide-steps">
-          <li>Scegli un <strong>concetto</strong> (es. "Famiglia", "Viaggio") &mdash; è la categoria del ricordo</li>
-          <li>Seleziona il <strong>sentimento</strong> che meglio descrive come ti senti</li>
-          <li>Scrivi il <strong>contenuto</strong> del ricordo</li>
-          <li>Opzionalmente, aggiungi una nota di contesto e dei tag per organizzarlo</li>
+          <li dangerouslySetInnerHTML={{ __html: t('remember.guideStep1') }} />
+          <li dangerouslySetInnerHTML={{ __html: t('remember.guideStep2') }} />
+          <li dangerouslySetInnerHTML={{ __html: t('remember.guideStep3') }} />
+          <li>{t('remember.guideStep4')}</li>
         </ol>
         <div className="guide-note">
-          A differenza di Perceive, qui non c'è arricchimento da parte dell'IA.
-          Il ricordo viene salvato esattamente come lo scrivi. Utile quando vuoi avere il controllo totale.
+          {t('remember.guideNote')}
         </div>
       </SectionGuide>
 
       <form onSubmit={handleSubmit} className="form-card">
         <div className="form-row">
           <div className="field">
-            <label>CONCEPT <span className="required">*</span></label>
+            <label>{t('remember.conceptLabel')} <span className="required">{t('remember.required')}</span></label>
             <input
               type="text" name="concept"
               value={form.concept} onChange={handleChange}
-              placeholder="Debito, Famiglia, Lavoro..."
+              placeholder={t('remember.conceptPlaceholder')}
               autoComplete="off"
             />
           </div>
           <div className="field">
-            <label>FEELING <span className="required">*</span></label>
+            <label>{t('remember.feelingLabel')} <span className="required">{t('remember.required')}</span></label>
             <select name="feeling" value={form.feeling} onChange={handleChange}>
-              <option value="">-- select --</option>
+              <option value="">{t('remember.feelingSelect')}</option>
               {FEELINGS.map(f => (
                 <option key={f} value={f}>{FEELING_LABELS[f]} ({f})</option>
               ))}
@@ -90,35 +88,35 @@ export default function Remember() {
         </div>
 
         <div className="field">
-          <label>CONTENT <span className="required">*</span></label>
+          <label>{t('remember.contentLabel')} <span className="required">{t('remember.required')}</span></label>
           <textarea
             name="content" rows={4}
             value={form.content} onChange={handleChange}
-            placeholder="Scrivi il ricordo..."
+            placeholder={t('remember.contentPlaceholder')}
           />
-          <div className="char-count">{form.content.length} chars</div>
+          <div className="char-count">{form.content.length} {t('remember.chars')}</div>
         </div>
 
         <div className="form-row">
           <div className="field">
-            <label>NOTE <span className="optional">opzionale</span></label>
+            <label>{t('remember.noteLabel')} <span className="optional">{t('remember.noteOptional')}</span></label>
             <input
               type="text" name="note"
               value={form.note} onChange={handleChange}
-              placeholder="Contesto, annotazioni..."
+              placeholder={t('remember.notePlaceholder')}
             />
           </div>
           <div className="field">
-            <label>TAGS <span className="optional">separati da virgola</span></label>
+            <label>{t('remember.tagsLabel')} <span className="optional">{t('remember.tagsOptional')}</span></label>
             <input
               type="text" name="tags"
               value={form.tags} onChange={handleChange}
-              placeholder="casa, 2024, urgente..."
+              placeholder={t('remember.tagsPlaceholder')}
             />
             {tagList.length > 0 && (
               <div className="tag-preview">
-                {tagList.map((t, i) => (
-                  <span key={i} className="tag-chip">{t}</span>
+                {tagList.map((tg, i) => (
+                  <span key={i} className="tag-chip">{tg}</span>
                 ))}
               </div>
             )}
@@ -127,22 +125,22 @@ export default function Remember() {
 
         <div className="form-actions">
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? <><span className="loading" /> Saving...</> : '* Remember'}
+            {loading ? <><span className="loading" /> {t('remember.btnLoading')}</> : t('remember.btn')}
           </button>
-          <button type="button" className="btn-ghost" onClick={handleClear}>Clear</button>
+          <button type="button" className="btn-ghost" onClick={handleClear}>{t('remember.btnClear')}</button>
         </div>
       </form>
 
       {error && (
         <div className="response-area visible error">
-          <div className="response-label">Errore</div>
+          <div className="response-label">{t('remember.error')}</div>
           {error}
         </div>
       )}
 
       {result && (
         <div style={{ marginTop: 16 }}>
-          <div className="response-label" style={{ marginBottom: 8 }}>Ricordo Salvato</div>
+          <div className="response-label" style={{ marginBottom: 8 }}>{t('remember.resultLabel')}</div>
           <MemoryCard memory={result} />
         </div>
       )}

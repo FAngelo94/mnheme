@@ -1,0 +1,411 @@
+/**
+ * MNHEME — Italian translations (default)
+ */
+const it = {
+  // ── Layout / Header ──
+  layout: {
+    openMenu: 'Apri menu',
+    subtitle: 'Memory Journal',
+  },
+
+  // ── Sidebar ──
+  sidebar: {
+    subtitle: 'Memory Journal',
+    groupMemory: 'Memory',
+    groupExplore: 'Explore',
+    groupSystem: 'System',
+    navPerceive: 'Perceive',
+    navMemories: 'Memories',
+    navBrain: 'Brain',
+    navStats: 'Stats',
+    navSettings: 'Settings',
+    memories: 'memories',
+    concepts: 'concepts',
+  },
+
+  // ── HomePage / Perceive ──
+  perceive: {
+    title: 'Perceive',
+    desc: 'Scrivi liberamente. Il cervello di MNHEME analizza, cataloga e arricchisce il ricordo.',
+    guideTitle: 'Come funziona Perceive?',
+    guideIntro: '<strong>Perceive</strong> trasforma i tuoi pensieri grezzi in ricordi strutturati. È l\'unica funzione che <em>scrive</em> nel tuo diario.',
+    guideStep1: 'Scrivi liberamente quello che stai vivendo, pensando o provando',
+    guideStep2: 'L\'intelligenza artificiale analizza il testo ed estrae un <strong>concetto chiave</strong> (es. "Famiglia", "Lavoro"), un <strong>sentimento</strong> e dei <strong>tag</strong> tematici',
+    guideStep3: 'Il testo viene riscritto con maggiore profondità psicologica',
+    guideStep4: 'Il ricordo viene salvato in modo permanente e immutabile &mdash; non potrà mai essere modificato o cancellato',
+    guideNote: 'I 15 sentimenti riconosciuti sono: gioia, tristezza, rabbia, paura, nostalgia, amore, malinconia, serenità, sorpresa, ansia, gratitudine, vergogna, orgoglio, noia, curiosità.',
+    fieldLabel: 'COSA STAI VIVENDO?',
+    placeholder: 'Scrivi liberamente un pensiero, un\'emozione, un ricordo...',
+    chars: 'chars',
+    btnLoading: 'Perceiving...',
+    btn: '> Perceive',
+    error: 'Errore',
+    resultLabel: 'Ricordo Creato',
+    resultConcept: 'Concetto',
+    resultFeeling: 'Sentimento',
+    recentTitle: 'ULTIMI RICORDI',
+  },
+
+  // ── MemoriesPage ──
+  memories: {
+    title: 'Memories',
+    desc: 'Esplora, filtra e cerca nei ricordi.',
+    guideTitle: 'Come esplorare i ricordi?',
+    guideIntro: 'Questa sezione ti permette di sfogliare e cercare in tutti i tuoi ricordi.',
+    guideBrowse: '<strong>Browse</strong> &mdash; Filtra i ricordi per concetto, sentimento o entrambi. Puoi scegliere l\'ordine (più recenti o più vecchi prima) e il numero massimo di risultati.',
+    guideSearch: '<strong>Search</strong> &mdash; Cerca parole specifiche nel contenuto dei ricordi usando la ricerca full-text, oppure cerca per tag specifico.',
+    guideNote: 'Tutti i ricordi sono immutabili: una volta scritti, non possono essere modificati o cancellati. Questo riflette il principio di MNHEME &mdash; la memoria si stratifica, non si sovrascrive.',
+    tabBrowse: 'Browse',
+    tabSearch: 'Search',
+    filterConcept: 'CONCEPT',
+    filterConceptPlaceholder: 'Tutti...',
+    filterFeeling: 'FEELING',
+    filterFeelingAll: 'Tutti',
+    filterLimit: 'LIMIT',
+    filterOrder: 'ORDER',
+    orderNewest: 'Newest first',
+    orderOldest: 'Oldest first',
+    btnFetch: 'Fetch',
+    results: 'risultati',
+  },
+
+  // ── BrainPage ──
+  brain: {
+    title: 'Brain',
+    desc: 'Il cervello cognitivo di MNHEME: interroga, rifletti, ricorda manualmente, sogna, analizza.',
+    tabAsk: 'Ask (RAG)',
+    tabReflect: 'Reflect',
+    tabRemember: 'Remember',
+    tabDream: 'Dream',
+    tabIntrospect: 'Introspect',
+    tabSummarize: 'Summarize',
+  },
+
+  // ── Ask ──
+  ask: {
+    guideTitle: 'Come funziona Ask?',
+    guideIntro: '<strong>Ask</strong> risponde alle tue domande cercando nei tuoi ricordi. Funziona come un motore di ricerca intelligente sulla tua memoria personale.',
+    guideStep1: 'Scrivi una domanda (es. <em>"Come mi sento rispetto al denaro?"</em>)',
+    guideStep2: 'L\'IA estrae le parole chiave e i concetti dalla domanda',
+    guideStep3: 'Cerca i ricordi più rilevanti nel tuo diario (fino a 15)',
+    guideStep4: 'Genera una risposta basata <strong>esclusivamente</strong> sui tuoi ricordi reali',
+    guideNote: 'Ogni risposta include un livello di certezza (alta, media, bassa) e la lista dei ricordi usati come fonte. Ask non inventa nulla: se non hai ricordi su un argomento, te lo dirà.',
+    fieldLabel: 'DOMANDA (RAG)',
+    placeholder: 'Come mi sento rispetto al denaro? C\'è qualcosa di irrisolto con la mia famiglia?',
+    btnLoading: 'Thinking...',
+    btn: '? Ask',
+    error: 'Errore',
+    resultLabel: 'Risposta',
+    confidence: 'Certezza',
+    memoriesUsed: 'Ricordi utilizzati',
+  },
+
+  // ── Reflect ──
+  reflect: {
+    guideTitle: 'Come funziona Reflect?',
+    guideIntro: '<strong>Reflect</strong> analizza come le tue emozioni verso un concetto si sono evolute nel tempo. È il tuo motore di introspezione personale.',
+    guideStep1: 'Scegli un concetto dal tuo diario (es. <em>"Famiglia"</em>, <em>"Lavoro"</em>)',
+    guideStep2: 'Il sistema recupera tutti i ricordi legati a quel concetto, dal più vecchio al più recente',
+    guideStep3: 'Ricostruisce la sequenza emotiva nel tempo (es. rabbia &rarr; tristezza &rarr; serenità)',
+    guideStep4: 'L\'IA analizza i pattern ricorrenti, cosa resta irrisolto e il significato psicologico del percorso',
+    guideNote: 'Il risultato include un "arco emotivo" &mdash; un breve riassunto di come è cambiato il tuo rapporto con quel concetto. Reflect non modifica nulla: è solo lettura e analisi.',
+    fieldLabel: 'CONCETTO DA ANALIZZARE',
+    placeholder: 'Debito, Famiglia, Lavoro...',
+    btnLoading: 'Reflecting...',
+    btn: '~ Reflect',
+    error: 'Errore',
+    resultLabel: 'Riflessione su',
+    emotionalArc: 'Arco emotivo',
+  },
+
+  // ── Remember ──
+  remember: {
+    guideTitle: 'Come funziona Remember?',
+    guideIntro: '<strong>Remember</strong> ti permette di creare un ricordo manualmente, senza l\'aiuto dell\'IA. Sei tu a scegliere ogni dettaglio.',
+    guideStep1: 'Scegli un <strong>concetto</strong> (es. "Famiglia", "Viaggio") &mdash; è la categoria del ricordo',
+    guideStep2: 'Seleziona il <strong>sentimento</strong> che meglio descrive come ti senti',
+    guideStep3: 'Scrivi il <strong>contenuto</strong> del ricordo',
+    guideStep4: 'Opzionalmente, aggiungi una nota di contesto e dei tag per organizzarlo',
+    guideNote: 'A differenza di Perceive, qui non c\'è arricchimento da parte dell\'IA. Il ricordo viene salvato esattamente come lo scrivi. Utile quando vuoi avere il controllo totale.',
+    conceptLabel: 'CONCEPT',
+    conceptPlaceholder: 'Debito, Famiglia, Lavoro...',
+    feelingLabel: 'FEELING',
+    feelingSelect: '-- select --',
+    contentLabel: 'CONTENT',
+    contentPlaceholder: 'Scrivi il ricordo...',
+    chars: 'chars',
+    noteLabel: 'NOTE',
+    noteOptional: 'opzionale',
+    notePlaceholder: 'Contesto, annotazioni...',
+    tagsLabel: 'TAGS',
+    tagsOptional: 'separati da virgola',
+    tagsPlaceholder: 'casa, 2024, urgente...',
+    btnLoading: 'Saving...',
+    btn: '* Remember',
+    btnClear: 'Clear',
+    error: 'Errore',
+    validationError: 'Concept, feeling e content sono obbligatori.',
+    resultLabel: 'Ricordo Salvato',
+    required: '*',
+  },
+
+  // ── Dream (BrainPage panel) ──
+  dream: {
+    guideTitle: 'Come funziona Dream?',
+    guideIntro: '<strong>Dream</strong> simula il processo onirico: prende ricordi apparentemente non collegati tra loro e cerca connessioni nascoste e sorprendenti.',
+    guideStep1: 'Il sistema campiona 8 ricordi da emozioni diverse, garantendo varietà emotiva',
+    guideStep2: 'I ricordi vengono mescolati casualmente, come in un sogno',
+    guideStep3: 'L\'IA cerca il filo nascosto che li unisce: temi latenti, metafore, connessioni inattese',
+    guideStep4: 'Il risultato è un\'analisi onirica &mdash; suggestiva, non banale',
+    guideNote: 'Ogni volta che premi Dream ottieni risultati diversi, perché il campionamento è casuale. Servono almeno 2 ricordi nel diario per sognare.',
+    desc: 'Il cervello prende ricordi distanti e cerca connessioni inattese. Simula il processo onirico di consolidamento della memoria.',
+    btnLoading: 'Dreaming...',
+    btn: '~ Dream',
+    error: 'Errore',
+    resultLabel: 'Connessioni Oniriche',
+  },
+
+  // ── Introspect (BrainPage panel) ──
+  introspect: {
+    guideTitle: 'Come funziona Introspect?',
+    guideIntro: '<strong>Introspect</strong> analizza tutti i tuoi ricordi e produce un ritratto psicologico completo: chi sei, come elabori le emozioni, quali pattern ricorrono.',
+    guideStep1: 'Il sistema raccoglie statistiche su concetti e distribuzione emotiva',
+    guideStep2: 'Campiona i ricordi più recenti come contesto',
+    guideStep3: 'L\'IA produce un ritratto della persona, identifica pattern, tensioni irrisolte e risorse',
+    guideNote: 'Servono ricordi nel diario per poter fare introspezione. Il ritratto diventa più accurato con più ricordi.',
+    desc: 'Analisi psicologica completa basata su tutti i tuoi ricordi. Identifica pattern cognitivi, tensioni irrisolte e risorse emotive.',
+    btnLoading: 'Analyzing...',
+    btn: '@ Introspect',
+    error: 'Errore',
+    resultLabel: 'Ritratto Psicologico',
+    dominantConcepts: 'Concetti dominanti:',
+    basedOn: 'Basato su',
+    memoriesCount: 'ricordi',
+  },
+
+  // ── Summarize ──
+  summarize: {
+    guideTitle: 'Come funziona Summarize?',
+    guideIntro: '<strong>Summarize</strong> prende un gruppo di ricordi e li riassume in uno dei tre stili disponibili, mantenendo la complessità emotiva senza semplificare.',
+    guideStep1: 'Scegli opzionalmente un concetto e/o un sentimento per filtrare i ricordi',
+    guideStep2: 'Seleziona lo stile: <em>Narrativo</em> (racconto in prima persona), <em>Analitico</em> (analisi di pattern) o <em>Poetico</em> (prosa evocativa)',
+    guideStep3: 'L\'IA elabora tutti i ricordi selezionati e produce un riassunto coerente',
+    guideNote: 'Senza filtri, il sistema usa i ricordi più recenti (fino al limite impostato). Puoi combinare concetto e sentimento per un riassunto molto specifico.',
+    conceptLabel: 'CONCETTO',
+    conceptOptional: 'opzionale',
+    conceptPlaceholder: 'tutti i concetti',
+    feelingLabel: 'SENTIMENTO',
+    feelingOptional: 'opzionale',
+    feelingAll: 'Tutti',
+    styleLabel: 'STILE',
+    styleNarrative: 'Narrativo',
+    styleNarrativeDesc: 'Prima persona, fluido, continuo.',
+    styleAnalytical: 'Analitico',
+    styleAnalyticalDesc: 'Pattern, cause, temi. Tono oggettivo.',
+    stylePoetic: 'Poetico',
+    stylePoeticDesc: 'Prosa poetica. Immagini, ritmo, emozione.',
+    maxMemories: 'MAX RICORDI',
+    btnLoading: 'Riassumendo...',
+    btn: 'Summarize',
+    error: 'Errore',
+    resultLabel: 'Riassunto',
+    resultConcept: 'Concetto',
+    resultFeeling: 'Sentimento',
+    memoriesUsed: 'ricordi utilizzati',
+  },
+
+  // ── StatsPage ──
+  statsPage: {
+    title: 'Stats, Timeline & Graph',
+    desc: 'Statistiche del database, timeline emotiva e grafo delle connessioni.',
+    guideTitle: 'Cosa trovo qui?',
+    guideDashboard: '<strong>Dashboard</strong> &mdash; Una panoramica del tuo diario: quanti ricordi hai, quanti concetti e sentimenti diversi hai esplorato, e quanto spazio occupa il database. Include la distribuzione emotiva (quali emozioni prevalgono) e la mappa dei concetti.',
+    guideTimeline: '<strong>Timeline</strong> &mdash; Scegli un concetto e visualizza come le tue emozioni a riguardo si sono evolute nel tempo, in ordine cronologico. Ogni punto della timeline mostra il sentimento, la data e le note associate.',
+    guideGraph: '<strong>Graph</strong> &mdash; Una visualizzazione interattiva a rete dei tuoi ricordi. I nodi rappresentano ricordi individuali, collegati da concetti, sentimenti o tag condivisi. Puoi trascinare, zoomare e cliccare per esplorare le connessioni.',
+    guideNote: 'La timeline è particolarmente utile prima di usare Reflect: ti dà un colpo d\'occhio visivo sull\'evoluzione emotiva, mentre Reflect ne fa un\'analisi profonda con l\'IA. Il grafo mostra le relazioni strutturali tra i ricordi.',
+    tabDashboard: 'Dashboard',
+    tabTimeline: 'Timeline',
+    tabGraph: 'Graph',
+  },
+
+  // ── Stats component ──
+  stats: {
+    totalMemories: 'TOTAL MEMORIES',
+    concepts: 'CONCEPTS',
+    feelingsUsed: 'FEELINGS USED',
+    ofTotal: 'of',
+    total: 'total',
+    storage: 'STORAGE',
+    emotionalDistribution: 'DISTRIBUZIONE EMOTIVA',
+    conceptsSection: 'CONCETTI',
+    memorySingular: 'memory',
+    memoryPlural: 'memories',
+    feelingsConceptsSection: 'SENTIMENTI - CONCETTI ASSOCIATI',
+  },
+
+  // ── Timeline ──
+  timeline: {
+    conceptLabel: 'CONCEPT',
+    conceptPlaceholder: 'Debito, Famiglia, Lavoro...',
+    btnLoad: 'Load timeline',
+    noData: 'Nessun dato per',
+    entriesFor: 'entries for',
+  },
+
+  // ── Graph ──
+  graph: {
+    guideTitle: 'Come funziona il Grafo?',
+    guideIntro: '<strong>Memory Graph</strong> visualizza la rete dei tuoi ricordi come un grafo interattivo. Ogni nodo rappresenta un ricordo, e i collegamenti mostrano le relazioni tra di essi.',
+    guideStep1: 'Scegli il tipo di collegamento: per <em>Concetto</em>, <em>Sentimento</em>, <em>Tag</em> o <em>Tutti</em>',
+    guideStep2: 'Filtra per sentimento o concetto specifico per concentrare l\'analisi',
+    guideStep3: 'I nodi grandi (hub) rappresentano concetti, sentimenti o tag condivisi',
+    guideStep4: 'Trascina i nodi, usa la rotella del mouse per zoomare, clicca per i dettagli',
+    guideNote: 'I colori dei nodi riflettono il sentimento associato al ricordo. Ricordi con lo stesso concetto, sentimento o tag vengono collegati tramite nodi hub.',
+    connectBy: 'Collega per',
+    modeConcept: 'Concetto',
+    modeFeeling: 'Sentimento',
+    modeTag: 'Tag',
+    modeAll: 'Tutti',
+    filterFeeling: 'Sentimento',
+    filterFeelingAll: 'Tutti',
+    filterConcept: 'Concetto',
+    filterConceptPlaceholder: 'tutti i concetti',
+    maxNodes: 'Max nodi',
+    btnLoading: 'Caricamento...',
+    btnLoad: 'Carica grafo',
+    emptyPrompt: 'Clicca "Carica grafo" per visualizzare la rete dei ricordi',
+    emptyNoMatch: 'Nessun ricordo corrisponde ai filtri selezionati',
+    legendConceptHub: 'Hub concetto',
+    legendFeelingHub: 'Hub sentimento',
+    legendTagHub: 'Hub tag',
+    detailMemories: 'ricordi',
+  },
+
+  // ── Search ──
+  search: {
+    placeholder: 'Cerca nei ricordi...',
+    btn: 'Search',
+    tagLabel: 'Per tag:',
+    tagPlaceholder: 'casa, lavoro, urgente...',
+    tagBtn: 'Tag search',
+    resultsFor: 'risultati per',
+    memoriesWithTag: 'ricordi con tag',
+  },
+
+  // ── MemoryList ──
+  memoryList: {
+    empty: 'Nessun ricordo trovato.',
+  },
+
+  // ── SettingsPage ──
+  settingsPage: {
+    title: 'Settings',
+    desc: 'Personalizza il tuo diario e configura le integrazioni.',
+    guideTitle: 'Guida alle impostazioni',
+    guideAppearance: '<strong>Appearance</strong> &mdash; Scegli il tema visivo del tuo diario tra 5 stili diversi. La scelta viene salvata automaticamente.',
+    guideLLM: '<strong>LLM Provider</strong> &mdash; Configura il modello di intelligenza artificiale che alimenta Perceive, Ask, Reflect e Dream. Puoi usare provider locali gratuiti (LM Studio, Ollama) o servizi cloud. Seleziona un preset oppure inserisci manualmente URL, modello e chiave API.',
+    guideExport: '<strong>Export / Import</strong> &mdash; Esporta tutti i tuoi ricordi come file JSON per backup o migrazione. Puoi reimportarli in qualsiasi momento; i duplicati vengono ignorati automaticamente.',
+    guideNote: 'Senza un LLM configurato, potrai comunque usare Remember (salvataggio manuale), Browse, Search e Stats. Le funzioni cognitive (Perceive, Ask, Reflect, Dream) richiedono un provider LLM attivo.',
+    tabAppearance: 'Appearance',
+    tabProvider: 'LLM Provider',
+    tabData: 'Export / Import',
+    tabLanguage: 'Lingua',
+  },
+
+  // ── Settings (LLM Provider) ──
+  settings: {
+    guideTitle: 'Quali provider LLM sono gratuiti?',
+    guideIntro: 'MNHEME funziona con qualsiasi provider LLM. Ecco i migliori <strong>gratuiti</strong>, divisi per categoria.',
+    guideFreeLocal: 'Gratuiti e locali (nessun limite)',
+    guideFreeCloud: 'Free tier cloud (non scadono)',
+    guideCredits: 'Crediti iniziali (si esauriscono)',
+    guideTip: '<strong>Consiglio:</strong> per iniziare senza costi, usa LM Studio o Ollama in locale. Come fallback cloud, Google AI Studio e Groq sono le scelte migliori. Seleziona un preset dal menu qui sotto per configurare automaticamente l\'URL.',
+    lmStudioDesc: 'GUI desktop, modelli GGUF da HuggingFace. Nessuna API key necessaria. Limite = solo il tuo hardware.',
+    ollamaDesc: 'CLI, supporta Llama, Mistral, DeepSeek, Qwen, Gemma e altri. Nessuna API key. Limite = solo il tuo hardware.',
+    googleDesc: 'Il free tier più generoso. Gemini 2.5 Pro: 5 RPM, 100 richieste/giorno. Flash: 10 RPM, 250/giorno. Context 1M token.',
+    mistralDesc: 'Piano "Experiment": 1 miliardo di token/mese. Tutti i modelli inclusi, anche Codestral. Solo verifica telefono.',
+    groqDesc: '~30 RPM. LLaMA 3.3 70B: ~500K token/giorno. Velocità eccezionale: inference hardware dedicato.',
+    cerebrasDesc: '1M token/giorno. Inference ultra-rapida a 2600+ token/sec. Context fino a 64K.',
+    openrouterDesc: '~27 modelli gratuiti (ID con suffisso :free). 20 RPM, 50 richieste/giorno sui modelli free.',
+    togetherDesc: 'Fino a $100 in crediti alla registrazione. Ampia scelta di modelli open-source.',
+    anthropicDesc: '$5 alla registrazione. Claude Haiku, Sonnet, Opus. Studenti: fino a $300.',
+    sambanovaDesc: '$5 crediti (~30M token su Llama 8B). Scadenza: 30 giorni.',
+    fireworksDesc: '$1 in crediti iniziali. Modelli a partire da $0.20/M token.',
+    tagFree: 'Gratuito',
+    tagCredits100: '$100 crediti',
+    tagCredits5: '$5 crediti',
+    tagCredits5_30: '$5 / 30gg',
+    tagCredits1: '$1 crediti',
+    presetLabel: 'PROVIDER PRESET',
+    presetPlaceholder: '-- Scegli un preset --',
+    urlLabel: 'ENDPOINT URL',
+    modelLabel: 'MODEL',
+    apiKeyLabel: 'API KEY',
+    apiKeyOptional: 'opzionale per provider locali',
+    temperatureLabel: 'TEMPERATURE',
+    maxTokensLabel: 'MAX TOKENS',
+    btnTesting: 'Testing...',
+    btnTest: '@ Test Connection',
+    testSuccess: 'Connessione riuscita',
+    testFail: 'Connessione fallita',
+    testReply: 'Il provider ha risposto:',
+    configTitle: 'STATO CONFIGURAZIONE',
+    configProvider: 'Provider',
+    configUrl: 'URL',
+    configModel: 'Model',
+    configApiKey: 'API Key',
+  },
+
+  // ── ThemeSelector ──
+  theme: {
+    title: 'Appearance',
+    desc: 'Scegli un tema visivo per il tuo diario. La scelta viene salvata automaticamente e applicata ad ogni visita.',
+  },
+
+  // ── ExportImport ──
+  exportImport: {
+    exportTitle: 'ESPORTA',
+    exportDesc: 'Scarica tutti i ricordi come file JSON. Utile per backup o migrazione.',
+    exportBtn: 'Export JSON',
+    exportSuccess: 'Esportati {count} ricordi.',
+    importTitle: 'IMPORTA',
+    importDesc: 'Importa ricordi da un file JSON esportato. I duplicati (stesso memory_id) vengono ignorati.',
+    importFileLabel: 'FILE JSON',
+    importLoading: 'Importazione in corso...',
+    importSuccess: 'Importati {count} nuovi ricordi.',
+    importError: 'Errore importazione: {error}',
+    completed: 'Completato',
+    errorLabel: 'Errore',
+  },
+
+  // ── SectionGuide ──
+  sectionGuide: {
+    hideGuide: 'Nascondi guida',
+    defaultTitle: 'Come funziona?',
+  },
+
+  // ── InstallBanner ──
+  install: {
+    title: 'Installa MNHEME',
+    desc: 'Aggiungi il diario alla schermata Home per un accesso rapido, anche offline.',
+    btn: 'Installa',
+    close: 'Chiudi',
+  },
+
+  // ── Language selector ──
+  language: {
+    title: 'LINGUA',
+    desc: 'Scegli la lingua dell\'interfaccia. I ricordi e i contenuti generati dall\'IA non vengono tradotti.',
+    italian: 'Italiano',
+    english: 'English',
+  },
+
+  // ── Common ──
+  common: {
+    error: 'Errore',
+    required: '*',
+    optional: 'opzionale',
+  },
+};
+
+export default it;

@@ -1,4 +1,5 @@
 import { useTheme } from '../hooks/useTheme';
+import { useI18n } from '../i18n/index.jsx';
 
 /** Small swatches showing 4 representative colors from each theme. */
 function Swatches({ vars }) {
@@ -14,19 +15,19 @@ function Swatches({ vars }) {
 
 export default function ThemeSelector() {
   const { themeId, setTheme, themes, themeIds } = useTheme();
+  const { t } = useI18n();
 
   return (
     <div>
       <div className="form-card">
-        <div className="section-title" style={{ marginBottom: 16 }}>Appearance</div>
+        <div className="section-title" style={{ marginBottom: 16 }}>{t('theme.title')}</div>
         <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 20, lineHeight: 1.6 }}>
-          Choose a visual theme for your journal. The selected theme is saved
-          automatically and applied on every visit.
+          {t('theme.desc')}
         </p>
 
         <div className="theme-grid">
           {themeIds.map(id => {
-            const t = themes[id];
+            const th = themes[id];
             const isActive = id === themeId;
             return (
               <div
@@ -39,9 +40,9 @@ export default function ThemeSelector() {
                 aria-pressed={isActive}
               >
                 {isActive && <span className="theme-check" aria-hidden="true">&#10003;</span>}
-                <div className="theme-card-name">{t.name}</div>
-                <div className="theme-card-desc">{t.description}</div>
-                <Swatches vars={t.vars} />
+                <div className="theme-card-name">{th.name}</div>
+                <div className="theme-card-desc">{th.description}</div>
+                <Swatches vars={th.vars} />
               </div>
             );
           })}
