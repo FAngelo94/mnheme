@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import InstallBanner from './InstallBanner';
 
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -58,6 +59,8 @@ export default function Layout({ children }) {
       <main className="main-content">
         {children}
       </main>
+
+      <InstallBanner />
     </div>
   );
 }
