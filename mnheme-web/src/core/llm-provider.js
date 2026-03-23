@@ -5,7 +5,8 @@
  * Supports OpenAI-compatible and Anthropic formats.
  */
 
-const SETTINGS_KEY = 'mnheme_settings';
+const SETTINGS_KEY  = 'mnheme_settings';
+const PROVIDERS_KEY = 'mnheme_providers';
 
 export class LLMError extends Error {
   constructor(message, { provider = '', statusCode = 0 } = {}) {
@@ -44,6 +45,77 @@ export class LLMProvider {
     } catch {
       return null;
     }
+  }
+
+  /**
+   * Create an ordered array of LLMProvider instances from the provider list
+   * in localStorage. Falls back to fromSettings() for backward compatibility.
+   */
+  static fromProviderList() {
+    try {
+      const raw = localStorage.getItem(PROVIDERS_KEY);
+      if (raw) {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list) && list.length > 0) {
+          return list
+            .filter(p => p.url && p.model)
+            .map(p => new LLMProvider({
+              url:         p.url,
+              model:       p.model,
+              apiKey:      p.apiKey || '',
+              temperature: p.temperature ?? 0.3,
+              maxTokens:   p.maxTokens ?? 2048,
+            }));
+        }
+      }
+    } catch { /* fall through */ }
+
+    // Backward compat: try the old single-provider format
+    const single = LLMProvider.fromSettings();
+    return single ? [single] : [];
+  }
+
+  /**
+   * Try providers in order. Return the first successful response.
+   * Throws an LLMError listing all failures only if every provider fails.
+   */
+  static async completeWithFallback(providers, system, user) {
+    if (!providers.length) {
+      throw new LLMError('Nessun provider LLM configurato.');
+    }
+    const errors = [];
+    for (const provider of providers) {
+      try {
+        return await provider.complete(system, user);
+      } catch (e) {
+        errors.push(`[${provider.name}] ${e.message}`);
+      }
+    }
+    throw new LLMError(
+      `Tutti i provider hanno fallito:\n${errors.join('\n')}`,
+      { provider: 'fallback-chain' }
+    );
+  }
+
+  /**
+   * Vision fallback across providers.
+   */
+  static async completeVisionWithFallback(providers, system, user, mediaItems) {
+    if (!providers.length) {
+      throw new LLMError('Nessun provider LLM configurato.');
+    }
+    const errors = [];
+    for (const provider of providers) {
+      try {
+        return await provider.completeVision(system, user, mediaItems);
+      } catch (e) {
+        errors.push(`[${provider.name}] ${e.message}`);
+      }
+    }
+    throw new LLMError(
+      `Tutti i provider hanno fallito:\n${errors.join('\n')}`,
+      { provider: 'fallback-chain' }
+    );
   }
 
   /** Complete a system+user prompt. Returns the response text. */

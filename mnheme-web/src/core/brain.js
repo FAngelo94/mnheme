@@ -79,12 +79,12 @@ export class Brain {
     this._db = db;
   }
 
-  _getProvider() {
-    const provider = LLMProvider.fromSettings();
-    if (!provider) {
+  _getProviders() {
+    const providers = LLMProvider.fromProviderList();
+    if (!providers.length) {
       throw new Error('Nessun provider LLM configurato. Vai nelle Impostazioni per configurarlo.');
     }
-    return provider;
+    return providers;
   }
 
   /**
@@ -96,7 +96,7 @@ export class Brain {
     concept = null, feeling = null, tags = null, note = '',
     mediaType = 'text', mediaData = null, mediaMime = null,
   } = {}) {
-    const llm = this._getProvider();
+    const providers = this._getProviders();
     const validFeelings = FEELINGS.join(', ');
 
     const prompt =
@@ -140,9 +140,9 @@ export class Brain {
         `Descrivi brevemente cosa vedi/senti, poi rispondi con il JSON richiesto.\n\n` +
         prompt;
 
-      rawJson = await llm.completeVision(SYSTEM_PROMPT, visionPrompt, mediaItems);
+      rawJson = await LLMProvider.completeVisionWithFallback(providers, SYSTEM_PROMPT, visionPrompt, mediaItems);
     } else {
-      rawJson = await llm.complete(SYSTEM_PROMPT, prompt);
+      rawJson = await LLMProvider.completeWithFallback(providers, SYSTEM_PROMPT, prompt);
     }
 
     const parsed = parseJson(rawJson);
@@ -190,7 +190,7 @@ export class Brain {
 
   /** RAG: answer a question using personal memories as context. */
   async ask(question, { maxMemories = 15, concepts = null } = {}) {
-    const llm = this._getProvider();
+    const providers = this._getProviders();
 
     // Step 1: keyword extraction
     const kwPrompt =
@@ -198,7 +198,7 @@ export class Brain {
       `Rispondi SOLO con JSON: {"keywords": ["kw1","kw2"], "concepts": ["Concetto1"]}\n\n` +
       `Domanda: ${question}`;
 
-    const kwParsed = parseJson(await llm.complete(SYSTEM_PROMPT, kwPrompt));
+    const kwParsed = parseJson(await LLMProvider.completeWithFallback(providers, SYSTEM_PROMPT, kwPrompt));
     const keywords     = kwParsed.keywords || [];
     const llmConcepts  = concepts || kwParsed.concepts || [];
 
@@ -236,7 +236,7 @@ export class Brain {
       `Se le informazioni non bastano, dillo chiaramente.\n` +
       `Ultima riga: "Certezza: [alta/media/bassa] — [motivazione breve]"`;
 
-    const raw = await llm.complete(SYSTEM_PROMPT, answerPrompt);
+    const raw = await LLMProvider.completeWithFallback(providers, SYSTEM_PROMPT, answerPrompt);
     const [confidence, answerText] = extractTrailingLine(raw, 'Certezza:');
 
     return {
@@ -249,7 +249,7 @@ export class Brain {
 
   /** Analyze the emotional evolution of a concept over time. */
   async reflect(concept) {
-    const llm = this._getProvider();
+    const providers = this._getProviders();
     const memories = this._db.recall(concept, { oldestFirst: true });
 
     if (!memories.length) {
@@ -271,7 +271,7 @@ export class Brain {
       `4. Il significato psicologico del percorso\n\n` +
       `Ultima riga: "Arco: [sintesi brevissima dell'evoluzione]"`;
 
-    const raw = await llm.complete(SYSTEM_PROMPT, prompt);
+    const raw = await LLMProvider.completeWithFallback(providers, SYSTEM_PROMPT, prompt);
     const [arc, text] = extractTrailingLine(raw, 'Arco:');
 
     return {
@@ -284,7 +284,7 @@ export class Brain {
 
   /** Full psychological portrait based on all memories. */
   async introspect() {
-    const llm = this._getProvider();
+    const providers = this._getProviders();
     const total = this._db.count();
     if (total === 0) throw new Error('Database vuoto.');
 
@@ -317,7 +317,7 @@ export class Brain {
       `5. Una frase che cattura l'essenza di questa mente\n\n` +
       `Sii specifico, non generalizzare.`;
 
-    const portrait = await llm.complete(SYSTEM_PROMPT, prompt);
+    const portrait = await LLMProvider.completeWithFallback(providers, SYSTEM_PROMPT, prompt);
 
     return {
       portrait,
@@ -331,7 +331,7 @@ export class Brain {
   async summarize(memories, { style = 'narrativo' } = {}) {
     if (!memories.length) return 'Nessun ricordo da riassumere.';
 
-    const llm = this._getProvider();
+    const providers = this._getProviders();
     const styles = {
       narrativo:  'Prima persona, fluido, continuo.',
       analitico:  'Analizza pattern, cause, temi. Tono oggettivo.',
@@ -340,7 +340,8 @@ export class Brain {
     const instr = styles[style] || styles.narrativo;
     const context = memoriesToContext(memories);
 
-    return llm.complete(
+    return LLMProvider.completeWithFallback(
+      providers,
       SYSTEM_PROMPT,
       `Riassumi questi ricordi personali.\n\n${context}\n\n` +
       `${instr}\nMantieni la complessità emotiva. Non semplificare.`
@@ -349,7 +350,7 @@ export class Brain {
 
   /** Free association: find unexpected connections between distant memories. */
   async dream(nMemories = 8) {
-    const llm = this._getProvider();
+    const providers = this._getProviders();
     const allMems = this._db.recallAll();
 
     if (allMems.length < 2) {
@@ -393,7 +394,7 @@ export class Brain {
       `4. Una metafora o immagine che li contenga tutti\n\n` +
       `Scrivi come un'analisi onirica — suggestiva, non banale.`;
 
-    const connections = await llm.complete(SYSTEM_PROMPT, prompt);
+    const connections = await LLMProvider.completeWithFallback(providers, SYSTEM_PROMPT, prompt);
 
     return {
       connections,
